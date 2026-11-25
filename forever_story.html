@@ -12,23 +12,26 @@
     -webkit-text-size-adjust:100%;overscroll-behavior:none}
   #app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
 
-  /* ── 상단 바 ── */
-  header{flex:0 0 auto;display:flex;align-items:center;gap:6px;
-    padding:8px 10px;padding-top:calc(8px + env(safe-area-inset-top, 0px));
+  /* ── 상단 바 (얇게) ── */
+  header{flex:0 0 auto;display:flex;align-items:center;gap:5px;
+    padding:5px 8px;padding-top:calc(5px + env(safe-area-inset-top, 0px));
     background:#111318;border-bottom:1px solid #2c3038}
-  .brand{flex:1 1 auto;min-width:0;font-size:15px;font-weight:700;letter-spacing:-.2px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  header button{flex:0 0 auto;border:0;border-radius:12px;background:#2b303a;color:#fff;
-    font-family:inherit;font-size:15px;font-weight:700;padding:0 10px;height:42px;
+  .brand{flex:1 1 auto;min-width:0;font-size:14px;font-weight:700;letter-spacing:-.2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+  header button{flex:0 0 auto;border:0;border-radius:9px;background:#2b303a;color:#fff;
+    font-family:inherit;font-size:15px;font-weight:700;padding:0 10px;height:40px;
     display:inline-flex;align-items:center;justify-content:center;gap:4px;
-    touch-action:manipulation;cursor:pointer}
+    touch-action:manipulation;cursor:pointer;line-height:1}
   header button:active{background:#3c444f}
-  #pageChip{min-width:78px;font-variant-numeric:tabular-nums;background:#1d3a57;color:#dcecff}
+  #pageChip{min-width:72px;font-variant-numeric:tabular-nums;background:#1d3a57;color:#dcecff}
+  #zoomBtn{margin-left:auto}
   #zoomBtn.on{background:#8a5a00;color:#fff6e0}
+  #tocBtn{font-size:17px;padding:0 10px}
 
-  /* ── 책 화면 ── */
+  /* ── 책 화면 (하단 바 없이 끝까지) ── */
   #stage{flex:1 1 auto;position:relative;min-height:0;background:#20232a}
-  #scroller{position:absolute;inset:0;display:flex;overflow:hidden;touch-action:pan-y}
+  #scroller{position:absolute;left:0;right:0;top:0;bottom:env(safe-area-inset-bottom, 0px);
+    display:flex;overflow:hidden;touch-action:pan-y}
   #scroller.zoomed{overflow:auto;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
   #book{position:relative;margin:auto;flex:0 0 auto;background:#fff;border-radius:3px;
     box-shadow:0 6px 24px rgba(0,0,0,.45)}
@@ -36,23 +39,34 @@
   .page.cur{visibility:visible;opacity:1;z-index:2}
   .page img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
 
-  /* ── 하단 넘김 바 ── */
-  footer{flex:0 0 auto;display:flex;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));
-    background:#111318;border-top:1px solid #2c3038}
-  footer button{flex:1 1 0;height:56px;border:0;border-radius:14px;color:#fff;font-family:inherit;
-    font-size:20px;font-weight:800;letter-spacing:-.3px;touch-action:manipulation;cursor:pointer}
-  #prevBtn{background:#3a404a}
-  #nextBtn{background:#2f7dd1}
-  #prevBtn:active{background:#4b525d}
-  #nextBtn:active{background:#4c93dd}
-  footer button:disabled{opacity:.35}
+  /* ── 화면 가장자리 터치로 넘기기 ── */
+  .edge{position:absolute;top:0;bottom:env(safe-area-inset-bottom, 0px);width:16%;z-index:6;
+    display:flex;align-items:center;border:0;background:transparent;padding:0;margin:0;
+    pointer-events:none;touch-action:manipulation;cursor:default}
+  #edgeL{left:0;justify-content:flex-start;padding-left:4px}
+  #edgeR{right:0;justify-content:flex-end;padding-right:4px}
+  body:not(.zoomed) .edge{pointer-events:auto;cursor:pointer}
+  .edge .ch{width:32px;height:60px;border-radius:9px;background:rgba(255,255,255,.10);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:26px;font-weight:700;line-height:1;opacity:0;transition:opacity .2s,background .15s;
+    pointer-events:none}
+  body:not(.zoomed) .edge:active .ch{opacity:1;background:rgba(255,255,255,.30)}
+  @media (hover:hover) and (pointer:fine){
+    body:not(.zoomed) .edge .ch{opacity:.42}
+    body:not(.zoomed) .edge:hover .ch{opacity:.95;background:rgba(255,255,255,.24)}
+  }
 
-  /* ── 힌트 ── */
-  #hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
-    max-width:92%;padding:9px 16px;border-radius:20px;background:rgba(15,18,24,.7);
-    color:#fff;font-size:14px;font-weight:600;text-align:center;white-space:nowrap;
-    overflow:hidden;text-overflow:ellipsis;pointer-events:none;z-index:20;
-    transition:opacity .8s ease}
+  /* ── 진행 막대 (2px) ── */
+  #prog{position:absolute;left:0;right:0;bottom:env(safe-area-inset-bottom, 0px);height:2px;
+    background:rgba(255,255,255,.10);z-index:4;pointer-events:none}
+  #prog i{display:block;height:100%;width:0;background:#4c93dd;transition:width .18s ease}
+
+  /* ── 안내 토스트 ── */
+  #hint{position:absolute;left:50%;bottom:calc(22px + env(safe-area-inset-bottom, 0px));
+    transform:translateX(-50%);max-width:94%;padding:9px 16px;border-radius:20px;
+    background:rgba(15,18,24,.72);color:#fff;font-size:14px;font-weight:600;text-align:center;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;z-index:20;
+    transition:opacity .7s ease}
   #hint.gone{opacity:0}
 
   /* ── 목차 / 쪽 이동 ── */
@@ -90,10 +104,10 @@
   #jumpGo{background:#2f7dd1}
   #jumpErr{min-height:20px;margin-top:8px;font-size:14px;color:#ffb4a8;text-align:center}
 
-  /* PC(넓은 화면)에서는 바 내용을 가운데로 모음 */
-  @media (min-width: 900px){
+  /* PC(넓은 화면): 바 내용을 가운데로, 제목 보이기 */
+  @media (min-width: 700px){
+    .brand{display:block}
     header{padding-left:calc((100% - 960px) / 2);padding-right:calc((100% - 960px) / 2)}
-    footer{padding-left:calc((100% - 960px) / 2);padding-right:calc((100% - 960px) / 2)}
   }
 </style>
 </head>
@@ -110,13 +124,11 @@
     <div id="scroller">
       <div id="book"></div>
     </div>
-    <div id="hint">좌우로 밀거나 ◀ 이전 · 다음 ▶ 으로 넘겨보세요</div>
+    <button id="edgeL" class="edge" aria-label="이전 쪽"><span class="ch">‹</span></button>
+    <button id="edgeR" class="edge" aria-label="다음 쪽"><span class="ch">›</span></button>
+    <div id="prog"><i></i></div>
+    <div id="hint">👈 화면을 좌우로 밀어 넘기세요 👉</div>
   </main>
-
-  <footer>
-    <button id="prevBtn" aria-label="이전 쪽">◀ 이전</button>
-    <button id="nextBtn" aria-label="다음 쪽">다음 ▶</button>
-  </footer>
 </div>
 
 <div id="toc" class="overlay hidden">
@@ -162,24 +174,29 @@
   var book = document.getElementById('book');
   var chip = document.getElementById('pageChip');
   var zoomBtn = document.getElementById('zoomBtn');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
+  var edgeL = document.getElementById('edgeL');
+  var edgeR = document.getElementById('edgeR');
+  var prog = document.querySelector('#prog i');
   var hint = document.getElementById('hint');
   var toc = document.getElementById('toc');
   var jump = document.getElementById('jump');
   var jumpInput = document.getElementById('jumpInput');
   var jumpErr = document.getElementById('jumpErr');
+  var hintGone = false;
 
-  /* ── 크기 계산 ── */
+  /* ── 크기 계산: 화면을 최대한 채움 ── */
   function layout(){
-    var pad = 6;
-    var aw = Math.max(60, stage.clientWidth - pad * 2);
-    var ah = Math.max(60, stage.clientHeight - pad * 2);
+    var wide = window.innerWidth >= 700;
+    var pad = wide ? 8 : 2;
+    var aw = Math.max(60, scroller.clientWidth - pad * 2);
+    var ah = Math.max(60, scroller.clientHeight - pad * 2);
     var w = aw, h = w / ASPECT;
     if (h > ah) { h = ah; w = h * ASPECT; }
     book.style.width = Math.round(w * zoom) + 'px';
     book.style.height = Math.round(h * zoom) + 'px';
-    scroller.classList.toggle('zoomed', zoom > 1.01);
+    var z = zoom > 1.01;
+    scroller.classList.toggle('zoomed', z);
+    document.body.classList.toggle('zoomed', z);
   }
 
   /* ── 앞뒤 몇 쪽만 DOM에 유지 ── */
@@ -211,8 +228,14 @@
       kids[i].classList.toggle('cur', parseInt(kids[i].getAttribute('data-i'), 10) === cur);
     }
     chip.textContent = (cur + 1) + ' / ' + TOTAL;
-    prevBtn.disabled = cur === 0;
-    nextBtn.disabled = cur === TOTAL - 1;
+    prog.style.width = ((cur + 1) / TOTAL * 100).toFixed(2) + '%';
+  }
+
+  function hideHint(){
+    if (hintGone || !hint) return;
+    hintGone = true;
+    hint.classList.add('gone');
+    setTimeout(function(){ if (hint.parentNode) hint.parentNode.removeChild(hint); }, 800);
   }
 
   function go(n){
@@ -221,6 +244,7 @@
     cur = n;
     if (zoom > 1.01) { scroller.scrollLeft = 0; scroller.scrollTop = 0; }
     render();
+    hideHint();
   }
   function next(){ go(cur + 1); }
   function prev(){ go(cur - 1); }
@@ -233,12 +257,11 @@
     zoomBtn.textContent = on ? '🔍 축소' : '🔍 확대';
     layout();
     if (!on) { scroller.scrollLeft = 0; scroller.scrollTop = 0; }
+    if (on) hideHint();
   }
   function toggleZoom(){ setZoom(zoom > 1.01 ? 1 : ZOOM_STEP); }
 
   /* ── 이벤트 ── */
-  prevBtn.addEventListener('click', prev);
-  nextBtn.addEventListener('click', next);
   zoomBtn.addEventListener('click', toggleZoom);
   window.addEventListener('resize', layout);
   window.addEventListener('orientationchange', function(){ setTimeout(layout, 200); });
@@ -247,9 +270,22 @@
     if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); next(); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
     else if (e.key === 'Escape') { closeToc(); closeJump(); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(TOTAL - 1); }
   });
 
-  /* 스와이프(한 손가락) */
+  /* PC: 가장자리 클릭 */
+  var lastTouch = 0;
+  edgeL.addEventListener('click', function(){
+    if (Date.now() - lastTouch < 700) return;
+    prev();
+  });
+  edgeR.addEventListener('click', function(){
+    if (Date.now() - lastTouch < 700) return;
+    next();
+  });
+
+  /* 스와이프(한 손가락) + 가장자리 탭 */
   var sx = 0, sy = 0, st = 0, tracking = false;
   stage.addEventListener('touchstart', function(e){
     if (e.touches.length === 1){
@@ -260,12 +296,18 @@
     }
   }, {passive:true});
   stage.addEventListener('touchend', function(e){
+    lastTouch = Date.now();
     if (!tracking) return;
     tracking = false;
     var t = e.changedTouches[0];
     var dx = t.clientX - sx, dy = t.clientY - sy;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4 && Date.now() - st < 1000){
+    var dt = Date.now() - st;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4 && dt < 1000){
       if (dx < 0) next(); else prev();
+    } else if (Math.abs(dx) < 14 && Math.abs(dy) < 14 && dt < 600){
+      var w = stage.clientWidth;
+      if (sx < w * 0.16) prev();
+      else if (sx > w * 0.84) next();
     }
   }, {passive:true});
 
@@ -312,7 +354,7 @@
   jump.addEventListener('click', function(e){ if (e.target === jump) closeJump(); });
 
   /* 목차 */
-  function openToc(){ toc.classList.remove('hidden'); }
+  function openToc(){ toc.classList.remove('hidden'); hideHint(); }
   function closeToc(){ toc.classList.add('hidden'); }
   document.getElementById('tocBtn').addEventListener('click', openToc);
   document.getElementById('tocClose').addEventListener('click', closeToc);
@@ -325,14 +367,14 @@
     });
   });
 
-  /* 첫 화면 힌트: 3초 뒤 사라짐 */
-  setTimeout(function(){ hint.classList.add('gone'); }, 3000);
-  setTimeout(function(){ if (hint.parentNode) hint.parentNode.removeChild(hint); }, 4200);
+  /* 첫 화면 힌트: 4초 뒤 사라짐 */
+  setTimeout(hideHint, 4000);
 
   /* 시작 */
   layout();
   render();
   window.addEventListener('load', layout);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', layout);
 })();
 </script>
 </body>
