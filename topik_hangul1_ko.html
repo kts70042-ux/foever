@@ -826,7 +826,8 @@
         g.textContent = it.glyph;
         var t = document.createElement("span");
         t.className = "t";
-        t.textContent = it.name ? (it.name + " · " + it.snd) : it.snd;
+        t.textContent = (it.name && it.name !== it.snd) ? (it.name + " · " + it.snd)
+                                                       : (it.name || it.snd);
         var i = document.createElement("span");
         i.className = "i";
         i.textContent = "🔊";
