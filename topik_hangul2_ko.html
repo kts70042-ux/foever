@@ -887,7 +887,7 @@
     if (uniq.length) {
       var cap = document.createElement("p");
       cap.className = "qprompt";
-      cap.textContent = "틀린 글자 — 다시 들어 보세요";
+      cap.textContent = "틀린 글자·단어 — 다시 들어 보세요";
       elWrongBox.appendChild(cap);
     }
     var grid = document.createElement("div");
@@ -904,11 +904,14 @@
         g.textContent = it.glyph;
         var t = document.createElement("span");
         t.className = "t";
-        t.textContent = (it.name || it.snd || it.glyph);
+        var lab = (it.name || it.snd || it.glyph);
+        t.textContent = lab;
         var i = document.createElement("span");
         i.className = "i";
         i.textContent = "🔊";
-        cell.appendChild(g); cell.appendChild(t); cell.appendChild(i);
+        cell.appendChild(g);
+        if (lab !== it.glyph) { cell.appendChild(t); }   /* 단어는 글자와 이름이 같아 한 번만 */
+        cell.appendChild(i);
         cell.addEventListener("click", function () { playItem(it, RATE_NORMAL, {}); });
         grid.appendChild(cell);
       })(uniq[j]);
