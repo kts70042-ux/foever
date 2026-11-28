@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>포에버공동체 출석관리 — 설명용 시연 샘플</title>
+<style>
+  :root{
+    --navy:#1f3864;
+    --navy2:#2c4d86;
+    --navy-soft:#e8eef9;
+    --gold:#b8860b;
+    --gold-soft:#fff6dd;
+    --green:#1e7a46;
+    --green-soft:#e3f5ea;
+    --red:#b3261e;
+    --red-soft:#fdeceb;
+    --grey:#5f6368;
+    --line:#d5d9e2;
+    --bg:#f2f4f8;
+    --card:#ffffff;
+    --yellow:#fffbe6;
+  }
+  *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans CJK KR","Noto Sans KR",sans-serif;
+    background:var(--bg);
+    color:#1b1b1b;
+    font-size:17px;
+    line-height:1.5;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 12px 40px;}
+
+  /* ---------- 상단 ---------- */
+  .topbar{
+    background:var(--navy);color:#fff;
+    padding:12px 16px;
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;gap:10px;align-items:center;}
+  .brand .logo{
+    width:38px;height:38px;border-radius:10px;background:#f3d27a;color:var(--navy);
+    display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700;flex:none;
+  }
+  .brand h1{font-size:19px;margin:0;line-height:1.25;}
+  .brand p{margin:2px 0 0;font-size:12.5px;color:#c9d6ee;}
+  .badge{
+    background:#f3d27a;color:#4a3400;font-weight:700;font-size:13px;
+    padding:6px 11px;border-radius:999px;letter-spacing:.2px;
+  }
+
+  /* ---------- 역할 전환 ---------- */
+  .rolebar{
+    background:#fff;border-bottom:1px solid var(--line);
+    padding:10px 12px;display:flex;gap:8px;
+    position:sticky;top:0;z-index:40;
+  }
+  .rolebar .wrap-inner{display:flex;gap:8px;width:100%;max-width:1100px;margin:0 auto;}
+  @media (min-width:760px){ .rolebar .wrap-inner{max-width:720px;} }
+  .role-btn{
+    flex:1 1 0;min-height:58px;cursor:pointer;
+    border:2px solid var(--line);background:#fff;border-radius:14px;
+    font-family:inherit;font-size:16px;font-weight:700;color:#3c4043;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    padding:6px 8px;line-height:1.25;
+  }
+  .role-btn small{font-size:12.5px;font-weight:500;color:var(--grey);}
+  .role-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .role-btn.active small{color:#cfdcf5;}
+  .role-btn:focus-visible{outline:3px solid #7aa2e3;outline-offset:2px;}
+
+  .hint{
+    max-width:1100px;margin:8px auto 0;padding:0 4px;
+    font-size:13px;color:#5a6472;line-height:1.45;
+  }
+
+  /* ---------- 공통 카드 ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;}
+  h2{font-size:20px;margin:0 0 2px;}
+  .sub{font-size:14px;color:var(--grey);margin:0;}
+
+  /* ---------- 목자 화면 ---------- */
+  .roomhead{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:12px;}
+  .btn-add{
+    min-height:52px;padding:0 18px;border-radius:13px;cursor:pointer;
+    border:0;background:var(--gold);color:#fff;font-family:inherit;font-size:16px;font-weight:700;
+  }
+  .btn-add:active{transform:translateY(1px);}
+
+  .datebar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 2px 2px;}
+  @media (max-width:560px){ .datebar{grid-template-columns:repeat(2,1fr);} }
+  .date-chip{
+    min-width:0;min-height:52px;padding:6px 10px;border-radius:12px;cursor:pointer;
+    border:2px solid var(--line);background:#fff;font-family:inherit;font-size:16px;color:#3c4043;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.25;
+  }
+  .date-chip b{font-size:16px;}
+  .date-chip span{font-size:12px;color:var(--grey);}
+  .date-chip.active{background:var(--navy-soft);border-color:var(--navy);color:var(--navy);font-weight:700;}
+  .date-chip.active span{color:var(--navy2);}
+
+  .summary{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;
+  }
+  .sum-item{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:10px 6px;text-align:center;
+  }
+  .sum-item b{display:block;font-size:28px;line-height:1.15;}
+  .sum-item span{font-size:13px;color:var(--grey);}
+  .sum-item.att b{color:var(--green);}
+  .sum-item.abs b{color:var(--red);}
+  .sum-item.cap b{color:var(--navy);}
+
+  .member-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+  @media (min-width:900px){
+    .member-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;}
+  }
+  .scroll-hint{display:none;font-size:13px;color:#7a6420;background:var(--yellow);
+    border:1px solid #e8d98f;border-radius:8px;padding:6px 10px;margin:0 0 8px;}
+  @media (max-width:760px){ .scroll-hint{display:block;} }
+  .member{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;
+    border-left:7px solid var(--line);scroll-margin-top:92px;
+  }
+  .member.is-attend{border-left-color:var(--green);}
+  .member.is-absent{border-left-color:var(--red);background:#fffafa;}
+  .m-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .m-no{
+    width:30px;height:30px;flex:none;border-radius:50%;background:var(--navy-soft);color:var(--navy);
+    font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .m-name{font-size:19px;font-weight:700;}
+  .badge-leader{
+    font-size:12.5px;font-weight:700;color:#6b4b00;background:var(--gold-soft);
+    border:1px solid #e8cf8a;border-radius:999px;padding:2px 9px;
+  }
+  .badge-new{
+    font-size:12.5px;font-weight:700;color:#0b5cad;background:#e5f1fd;
+    border:1px solid #a9cdf3;border-radius:999px;padding:2px 9px;
+  }
+  .toggle{display:flex;gap:8px;margin-left:auto;}
+  .tg{
+    min-width:92px;min-height:50px;border-radius:12px;cursor:pointer;
+    border:2px solid var(--line);background:#fff;font-family:inherit;font-size:16.5px;font-weight:700;color:#4b4f54;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .tg.on-att{background:var(--green);border-color:var(--green);color:#fff;}
+  .tg.on-abs{background:var(--red);border-color:var(--red);color:#fff;}
+
+  .reason-row{margin-top:10px;padding-top:10px;border-top:1px dashed #e3c8c6;}
+  .reason-label{font-size:13.5px;color:#8a3b34;font-weight:700;margin:0 0 6px;}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{
+    min-height:42px;padding:0 13px;border-radius:999px;cursor:pointer;
+    border:1.5px solid #e2c3bf;background:#fff;font-family:inherit;font-size:15px;color:#7d3a33;
+  }
+  .chip.sel{background:#f7d9d5;border-color:var(--red);color:#7a1f18;font-weight:700;}
+  .other-input{
+    margin-top:8px;width:100%;min-height:46px;border:1.5px solid var(--line);border-radius:10px;
+    padding:8px 12px;font-family:inherit;font-size:16px;color:#1b1b1b;background:#fff;
+  }
+
+  .prayer{margin-top:10px;}
+  .prayer label{font-size:13.5px;color:var(--grey);font-weight:700;display:block;margin-bottom:5px;}
+  .prayer input{
+    width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:10px;
+    padding:8px 12px;font-family:inherit;font-size:16px;color:#1b1b1b;background:#fcfdff;
+  }
+  .prayer input::placeholder{color:#9aa1ab;}
+  .prayer input:focus{outline:none;border-color:var(--navy2);background:#fff;}
+
+  .savebar{margin-top:16px;}
+  .savebar-inner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .savebar.pin{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;
+    padding:10px 12px 12px;background:rgba(242,244,248,.97);
+    border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(15,23,42,.08);
+  }
+  .savebar.pin .savebar-inner{max-width:1100px;margin:0 auto;}
+  .btn-save{
+    flex:1 1 240px;min-height:60px;border:0;border-radius:15px;cursor:pointer;
+    background:var(--navy);color:#fff;font-family:inherit;font-size:18px;font-weight:700;
+    box-shadow:0 4px 12px rgba(31,56,100,.22);
+  }
+  .btn-save:active{transform:translateY(1px);}
+  .save-meta{font-size:13px;color:var(--grey);}
+
+  /* ---------- 관리자 화면 ---------- */
+  .adm-head{margin-top:12px;}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;padding:12px 2px 8px;}
+  .tab{
+    flex:1 1 auto;min-height:52px;padding:6px 14px;border-radius:12px;cursor:pointer;
+    border:2px solid var(--line);background:#e9edf5;font-family:inherit;
+    font-size:15.5px;font-weight:700;color:#41474f;display:flex;align-items:center;justify-content:center;
+  }
+  .tab.active{background:#fff;border-color:var(--navy);color:var(--navy);}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;}
+
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .btn{
+    min-height:50px;padding:0 16px;border-radius:12px;cursor:pointer;font-family:inherit;
+    font-size:15.5px;font-weight:700;border:2px solid var(--navy);background:#fff;color:var(--navy);
+  }
+  .btn.solid{background:var(--navy);color:#fff;}
+  .btn.gold{border-color:var(--gold);background:var(--gold);color:#fff;}
+  .btn:active{transform:translateY(1px);}
+
+  .table-note{font-size:13px;color:var(--grey);margin:0 0 8px;line-height:1.45;}
+  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;-webkit-overflow-scrolling:touch;}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:760px;font-size:14.5px;}
+  th,td{padding:8px 6px;text-align:center;border-bottom:1px solid #e7eaf0;border-right:1px solid #eef1f6;white-space:nowrap;}
+  th{background:var(--navy);color:#fff;font-weight:700;font-size:13.5px;position:sticky;top:0;z-index:2;}
+  thead tr.grp th{background:var(--navy2);font-size:13px;}
+  th.month{background:#3d5c94;}
+  td{background:#fff;}
+  tbody tr:nth-child(even) td{background:#fafbfe;}
+  td.room{text-align:left;font-weight:700;padding-left:10px;}
+  td.room, th.room{position:sticky;left:0;z-index:3;box-shadow:1px 0 0 var(--line);}
+  th.room{z-index:5;background:var(--navy);}
+  tbody tr:nth-child(even) td.room{background:#fafbfe;}
+  tbody tr:nth-child(odd) td.room{background:#fff;}
+  td.empty{background:var(--yellow) !important;color:#9a8a3a;}
+  tr{scroll-margin-top:130px;}
+  tr.sub td{background:var(--navy-soft) !important;font-weight:700;color:var(--navy);border-top:2px solid var(--navy2);}
+  tr.sub td.room{background:var(--navy-soft) !important;}
+  tr.total td{background:#dbe6f7 !important;font-weight:700;color:var(--navy);}
+  tr.total td.room{background:#dbe6f7 !important;}
+  tr.newroom td{background:var(--gold-soft) !important;}
+  tr.newroom td.room{background:var(--gold-soft) !important;}
+
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#4a5058;margin-top:8px;}
+  .legend i{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:4px;vertical-align:-2px;}
+
+  /* 연속 결석 */
+  .stat-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .stat{flex:0 1 200px;min-width:128px;background:var(--navy-soft);border-radius:12px;padding:10px;text-align:center;}
+  .stat b{display:block;font-size:24px;color:var(--navy);}
+  .stat span{font-size:12.5px;color:#465469;}
+  .stat.warn{background:var(--red-soft);}
+  .stat.warn b{color:var(--red);}
+  .stat.visit{background:#fff2e0;}
+  .stat.visit b{color:#a65a00;}
+
+  .alist{display:flex;flex-direction:column;gap:8px;}
+  .aitem{
+    border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;
+    display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;
+  }
+  .aitem.v2{border-left:6px solid #c98a00;}
+  .aitem.v3{border-left:6px solid var(--red);}
+  .al-who{font-size:17px;font-weight:700;}
+  .al-meta{font-size:13.5px;color:var(--grey);}
+  .al-tag{
+    font-size:12.5px;font-weight:700;border-radius:999px;padding:3px 10px;
+  }
+  .tag-2{background:#fff3d6;color:#8a5b00;border:1px solid #eccf8e;}
+  .tag-3{background:var(--red-soft);color:#8c1d18;border:1px solid #eeb2ae;}
+  .al-right{margin-left:auto;text-align:right;font-size:13.5px;color:#4a5058;}
+
+  .filterbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:16px 0 8px;}
+  .filterbar label{font-size:14.5px;font-weight:700;color:var(--navy);}
+  select{
+    min-height:46px;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;
+    font-family:inherit;font-size:16px;background:#fff;color:#1b1b1b;
+  }
+  .pray-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;}
+  .pray-card{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fcfdff;}
+  .pray-card .pc-name{font-weight:700;font-size:16px;}
+  .pray-card .pc-room{font-size:12.5px;color:var(--grey);}
+  .pray-card p{margin:5px 0 0;font-size:15px;}
+  .muted{color:#9aa1ab;font-size:14px;}
+
+  /* 권한 승인 */
+  .auth-note{
+    background:var(--gold-soft);border:1px solid #ead8a3;border-radius:12px;
+    padding:10px 12px;font-size:14px;color:#5d4600;margin-bottom:10px;line-height:1.45;
+  }
+  .atable{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px;min-width:0;}
+  .atable th,.atable td{padding:9px 6px;border-bottom:1px solid #e7eaf0;background:#fff;white-space:normal;}
+  .atable th{position:static;background:var(--navy);}
+  .atable td.state{font-weight:700;}
+  .atable td.state.ok{color:var(--green);}
+  .atable td.state.wait{color:#a65a00;}
+  .tbtn{
+    min-height:44px;padding:0 14px;border-radius:10px;cursor:pointer;font-family:inherit;
+    font-size:14.5px;font-weight:700;border:2px solid var(--green);background:#fff;color:var(--green);
+  }
+  .tbtn.cancel{border-color:var(--red);color:var(--red);}
+  .tbtn:disabled{border-color:#c9cdd4;color:#8a9099;cursor:default;}
+  .lock{font-size:13px;color:#8a9099;}
+
+  /* 모달 & 토스트 */
+  .overlay{
+    position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:80;
+    display:flex;align-items:center;justify-content:center;padding:14px;
+  }
+  .modal{
+    background:#fff;border-radius:18px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;
+    padding:18px;
+  }
+  .modal h3{margin:0 0 4px;font-size:20px;}
+  .modal p.mtip{margin:0 0 14px;font-size:13.5px;color:var(--grey);}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:14.5px;font-weight:700;margin-bottom:5px;color:#33383f;}
+  .field input,.field select{width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:10px;
+    padding:8px 12px;font-family:inherit;font-size:16.5px;background:#fff;}
+  .field .seg{display:flex;gap:8px;}
+  .seg label{flex:1;margin:0;}
+  .seg input{position:absolute;opacity:0;width:1px;height:1px;}
+  .seg span{
+    display:flex;align-items:center;justify-content:center;min-height:50px;border:2px solid var(--line);
+    border-radius:10px;font-size:16px;font-weight:700;color:#4b4f54;cursor:pointer;
+  }
+  .seg input:checked + span{border-color:var(--navy);background:var(--navy-soft);color:var(--navy);}
+  .m-actions{display:flex;gap:8px;margin-top:6px;}
+  .m-actions .btn{flex:1;}
+
+  .toast{
+    position:fixed;left:50%;transform:translate(-50%,24px);
+    bottom:22px;z-index:100;max-width:92vw;
+    background:#1e2a3d;color:#fff;border-radius:14px;padding:14px 18px;
+    font-size:16px;font-weight:700;box-shadow:0 10px 24px rgba(0,0,0,.25);
+    transition:transform .28s ease, opacity .28s ease;text-align:center;
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;}
+  body.bar-pinned .toast{bottom:100px;}
+
+  .foot{margin:18px auto 0;font-size:12.5px;color:#7a8290;text-align:center;line-height:1.6;}
+
+  @media (max-width:560px){
+    body{font-size:16px;}
+    .savebar.pin .save-meta{display:none;}
+    .brand h1{font-size:17px;}
+    .role-btn{font-size:15px;min-height:56px;}
+    .sum-item b{font-size:25px;}
+    .tg{min-width:74px;font-size:15.5px;min-height:48px;}
+    .m-name{font-size:18px;}
+    .panel{padding:10px;}
+    .tab{font-size:14.5px;padding:6px 12px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h1>포에버공동체 출석관리</h1>
+      <p>지구촌교회 포에버공동체 · 사랑방 출석관리</p>
+    </div>
+  </div>
+  <div class="badge">설명용 시연 샘플</div>
+</header>
+
+<div class="rolebar">
+  <div class="wrap-inner">
+    <button class="role-btn active" id="btn-shepherd" type="button" aria-pressed="true">
+      🙋 목자 화면<small>지구촌A 예시</small>
+    </button>
+    <button class="role-btn" id="btn-admin" type="button" aria-pressed="false">
+      👑 관리자 화면<small>목사님 · 부장집사님</small>
+    </button>
+  </div>
+</div>
+<p class="hint">실제로는 로그인한 권한에 따라 한 화면만 보입니다. 위 버튼으로 두 화면을 오가며 설명하실 수 있습니다.</p>
+
+<div class="wrap">
+
+  <!-- ================= 목자 화면 ================= -->
+  <section id="view-shepherd">
+    <div class="card roomhead">
+      <div>
+        <h2>지구촌A 사랑방 <span class="badge-leader">목자 김순희</span></h2>
+        <p class="sub">담당 목사님이 승인한 사랑방만 열립니다 · 자매 사랑방</p>
+      </div>
+      <button class="btn-add" id="btn-add-member" type="button">+ 새가족 / 인원 추가</button>
+    </div>
+
+    <div class="datebar" id="datebar" role="group" aria-label="예배 날짜 선택"></div>
+
+    <div class="summary" id="summary">
+      <div class="sum-item cap"><b id="sum-cap">9</b><span>정원</span></div>
+      <div class="sum-item att"><b id="sum-att">7</b><span>출석</span></div>
+      <div class="sum-item abs"><b id="sum-abs">2</b><span>결석</span></div>
+    </div>
+
+    <div id="member-list" class="member-list"></div>
+
+    <div class="savebar" id="savebar">
+      <div class="savebar-inner">
+        <button class="btn-save" id="btn-save" type="button">💾 이번 주 출석 저장</button>
+        <span class="save-meta" id="save-meta">6월 4일 · 아직 저장 전</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 관리자 화면 ================= -->
+  <section id="view-admin" hidden>
+    <div class="card adm-head">
+      <h2>관리자 화면 <span class="badge-leader">담당 목사님 · 부장집사님</span></h2>
+      <p class="sub">전체 사랑방 출석현황 · 연속 결석 · 기도제목 · 접근 권한 승인을 한 곳에서 관리합니다.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" id="tab-stats" type="button" role="tab" aria-selected="true">📊 전체 출석현황</button>
+      <button class="tab" id="tab-absence" type="button" role="tab" aria-selected="false">⚠️ 연속 결석 · 기도제목</button>
+      <button class="tab" id="tab-auth" type="button" role="tab" aria-selected="false">🔐 접근 권한 승인</button>
+    </div>
+
+    <!-- 탭 1 -->
+    <div class="panel" id="panel-stats">
+      <div class="toolbar">
+        <button class="btn solid" id="btn-add-room" type="button">+ 새 사랑방 추가</button>
+        <button class="btn" id="btn-csv" type="button">📥 엑셀(CSV) 내려받기</button>
+      </div>
+      <p class="table-note">각 사랑방 목자가 저장한 출석 인원입니다. 사랑방을 추가하면 아래 소계·총출석인원과 평균이 바로 다시 계산됩니다.</p>
+      <p class="scroll-hint">← 표를 옆으로 넘기면 6월 출석과 평균까지 보입니다</p>
+      <div class="table-scroll">
+        <table id="stats-table">
+          <thead>
+            <tr class="grp">
+              <th rowspan="2">번호</th>
+              <th class="room" rowspan="2">사랑방</th>
+              <th rowspan="2">정원</th>
+              <th class="month" colspan="3">5월</th>
+              <th class="month" colspan="3">6월</th>
+              <th rowspan="2">5-6월<br>평균출석</th>
+            </tr>
+            <tr>
+              <th>7일</th><th>14일</th><th>21일</th><th>4일</th><th>11일</th><th>18일</th>
+            </tr>
+          </thead>
+          <tbody id="stats-body"></tbody>
+        </table>
+      </div>
+      <p class="table-note" style="margin-top:8px;">※ 표의 정원·출석 수치는 기존 출석부 예시를 그대로 옮겼습니다. 새 시스템에서는 목자가 추가한 명단 인원과 저장한 출석이 그대로 집계됩니다.</p>
+      <div class="legend">
+        <span><i style="background:#fff;border:1px solid #ccd1da"></i>목자가 저장한 출석 인원</span>
+        <span><i style="background:var(--yellow);border:1px solid #e8d98f"></i>아직 예배 전 (입력 전)</span>
+        <span><i style="background:var(--navy-soft);border:1px solid #b9c8e4"></i>자매·형제 소계 / 총출석인원</span>
+        <span><i style="background:var(--gold-soft);border:1px solid #e8cf8a"></i>이번 시연에서 새로 추가한 사랑방</span>
+      </div>
+    </div>
+
+    <!-- 탭 2 -->
+    <div class="panel" id="panel-absence" hidden>
+      <div class="stat-row">
+        <div class="stat warn"><b id="cnt-a2">0</b><span>2주 연속 결석 (주의)</span></div>
+        <div class="stat visit"><b id="cnt-a3">0</b><span>3주 연속 결석 (심방)</span></div>
+        <div class="stat"><b id="cnt-pray">0</b><span>기도제목 등록</span></div>
+      </div>
+      <p class="table-note" style="font-weight:700;color:var(--navy);font-size:15px;">2주·3주 연속 결석 — 먼저 챙길 분</p>
+      <div class="alist" id="absence-list"></div>
+
+      <div class="filterbar">
+        <label for="pray-filter">사랑방 기도제목 모아보기</label>
+        <select id="pray-filter"></select>
+      </div>
+      <div class="pray-grid" id="pray-grid"></div>
+    </div>
+
+    <!-- 탭 3 -->
+    <div class="panel" id="panel-auth" hidden>
+      <div class="auth-note">
+        🔐 <b>접근 권한은 담당 목사님과 부장집사님만 승인할 수 있습니다.</b><br>
+        목자는 승인된 <b>본인 사랑방만</b> 열람·입력하고, 목사님·부장집사님은 전체 사랑방·통계·권한 승인·보고서 출력을 관리합니다.
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b id="cnt-ok">0</b><span>승인완료</span></div>
+        <div class="stat wait" style="background:#fff3d6;"><b id="cnt-wait" style="color:#a65a00;">0</b><span>승인 대기</span></div>
+      </div>
+      <div class="toolbar">
+        <button class="btn gold" id="btn-add-applicant" type="button">+ 새 목자 권한 신청 받기 (시연)</button>
+      </div>
+      <div class="table-scroll">
+        <table class="atable" id="auth-table">
+          <thead>
+            <tr><th>성명</th><th>직분 / 역할</th><th>담당 사랑방</th><th>신청일</th><th>승인상태</th><th>승인자 · 승인일</th><th>승인 / 취소</th></tr>
+          </thead>
+          <tbody id="auth-body"></tbody>
+        </table>
+      </div>
+      <p class="table-note" style="margin-top:10px;">※ 담당 목사님·부장집사님 계정은 권한을 회수할 수 없도록 잠가 두었습니다. 목자를 맡지 않게 된 분은 '승인취소'를 누르면 그 사랑방을 더 이상 열 수 없습니다.</p>
+    </div>
+  </section>
+
+  <p class="foot">포에버공동체 출석관리 · 설명용 시연 샘플 (실제 데이터 저장 없음)<br>2026년 사랑방 개편 설명 자료 · 지구촌교회 포에버공동체</p>
+</div>
+
+<!-- 새 인원 추가 모달 -->
+<div class="overlay" id="member-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mm-title">
+    <h3 id="mm-title">새가족 / 인원 추가</h3>
+    <p class="mtip">목자가 새가족이 오면 직접 우리 사랑방 인원을 추가합니다. 추가하면 바로 명단과 정원 숫자에 반영됩니다.</p>
+    <div class="field">
+      <label for="mm-name">성명</label>
+      <input id="mm-name" type="text" placeholder="예: 홍길순" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>구분</label>
+      <div class="seg">
+        <label><input type="radio" name="mm-kind" value="새가족" checked><span>새가족</span></label>
+        <label><input type="radio" name="mm-kind" value="회원"><span>회원</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="mm-pray">기도제목 <span style="font-weight:400;color:#8a9099;">(비워두어도 됩니다)</span></label>
+      <input id="mm-pray" type="text" placeholder="예: 새 직장 적응" autocomplete="off">
+    </div>
+    <div class="m-actions">
+      <button class="btn" id="mm-cancel" type="button">취소</button>
+      <button class="btn solid" id="mm-ok" type="button">명단에 추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 새 사랑방 추가 모달 -->
+<div class="overlay" id="room-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rm-title">
+    <h3 id="rm-title">새 사랑방 추가</h3>
+    <p class="mtip">내년에 사랑방이 늘어나면 여기에서 추가합니다. 추가한 사랑방은 목자 승인 후 사용할 수 있습니다.</p>
+    <div class="field">
+      <label for="rm-name">사랑방 이름</label>
+      <input id="rm-name" type="text" placeholder="예: 지구촌E" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>구분</label>
+      <div class="seg">
+        <label><input type="radio" name="rm-kind" value="자매" checked><span>자매</span></label>
+        <label><input type="radio" name="rm-kind" value="형제"><span>형제</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="rm-cap">정원 (명)</label>
+      <input id="rm-cap" type="number" min="1" max="60" value="8">
+    </div>
+    <div class="m-actions">
+      <button class="btn" id="rm-cancel" type="button">취소</button>
+      <button class="btn solid" id="rm-ok" type="button">사랑방 추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- 데이터 ---------------- */
+  var DATES = [
+    {key:"2026-06-04", label:"6월 4일", tag:"이번 주", month:"6"},
+    {key:"2026-05-21", label:"5월 21일", tag:"지난주", month:"5"},
+    {key:"2026-05-14", label:"5월 14일", tag:"", month:"5"},
+    {key:"2026-05-07", label:"5월 7일", tag:"", month:"5"}
+  ];
+  // 표의 열 순서: 5/7, 5/14, 5/21, 6/4, 6/11, 6/18  (null = 아직 예배 전)
+  var COL_KEYS = ["2026-05-07","2026-05-14","2026-05-21","2026-06-04","2026-06-11","2026-06-18"];
+
+  var members = [
+    {id:1, name:"김순희", role:"목자", pray:"손주 수능"},
+    {id:2, name:"이민구", role:"회원", pray:"질병 치료"},
+    {id:3, name:"성일태", role:"회원", pray:"남편 여행 중"},
+    {id:4, name:"설민주", role:"회원", pray:"무사히 여행 다녀오길"},
+    {id:5, name:"김해진", role:"회원", pray:"딸 출산"},
+    {id:6, name:"송이부", role:"회원", pray:"허리치료"},
+    {id:7, name:"추만호", role:"회원", pray:""},
+    {id:8, name:"김태수", role:"회원", pray:""},
+    {id:9, name:"이친민", role:"회원", pray:""}
+  ];
+  var nextMemberId = 10;
+
+  // 날짜별 상태: status = "attend" | "absent", reason = 문자열
+  var attendance = {
+    "2026-06-04":{
+      1:{status:"attend", reason:""}, 2:{status:"absent", reason:"병원입원 · 치료"},
+      3:{status:"attend", reason:""}, 4:{status:"absent", reason:"여행"},
+      5:{status:"attend", reason:""}, 6:{status:"attend", reason:""},
+      7:{status:"attend", reason:""}, 8:{status:"attend", reason:""},
+      9:{status:"attend", reason:""}
+    },
+    "2026-05-21":{
+      1:{status:"attend", reason:""}, 2:{status:"absent", reason:"병원입원 · 치료"},
+      3:{status:"attend", reason:""}, 4:{status:"absent", reason:"여행"},
+      5:{status:"attend", reason:""}, 6:{status:"attend", reason:""},
+      7:{status:"attend", reason:""}, 8:{status:"attend", reason:""},
+      9:{status:"attend", reason:""}
+    },
+    "2026-05-14":{
+      1:{status:"attend", reason:""}, 2:{status:"absent", reason:"병원입원 · 치료"},
+      3:{status:"attend", reason:""}, 4:{status:"attend", reason:""},
+      5:{status:"attend", reason:""}, 6:{status:"attend", reason:""},
+      7:{status:"attend", reason:""}, 8:{status:"attend", reason:""},
+      9:{status:"attend", reason:""}
+    },
+    "2026-05-07":{
+      1:{status:"attend", reason:""}, 2:{status:"attend", reason:""},
+      3:{status:"attend", reason:""}, 4:{status:"attend", reason:""},
+      5:{status:"attend", reason:""}, 6:{status:"attend", reason:""},
+      7:{status:"attend", reason:""}, 8:{status:"attend", reason:""},
+      9:{status:"attend", reason:""}
+    }
+  };
+  var savedDates = {"2026-05-07":true, "2026-05-14":true, "2026-05-21":true};
+
+  var REASONS = ["병원입원 · 치료","여행","가정사","개인사정","직접입력"];
+
+  // 전체 출석현황 (첨부 표 그대로)
+  var rooms = [
+    {no:1,  kind:"자매", name:"지구촌A", cap:6,  att:[5,4,6,6,null,null]},
+    {no:2,  kind:"자매", name:"지구촌B", cap:6,  att:[6,6,6,6,null,null]},
+    {no:3,  kind:"자매", name:"지구촌C", cap:9,  att:[5,7,8,5,null,null]},
+    {no:4,  kind:"자매", name:"지구촌D", cap:7,  att:[4,4,4,4,null,null]},
+    {no:5,  kind:"자매", name:"라오스",  cap:15, att:[12,14,11,11,null,null]},
+    {no:6,  kind:"자매", name:"몽골",    cap:14, att:[12,11,12,12,null,null]},
+    {no:7,  kind:"자매", name:"백마소망",cap:14, att:[12,10,10,13,null,null]},
+    {no:8,  kind:"자매", name:"수마트라",cap:18, att:[7,5,6,7,null,null]},
+    {no:9,  kind:"자매", name:"경찰대학",cap:8,  att:[3,7,5,4,null,null]},
+    {no:10, kind:"자매", name:"북한1",   cap:9,  att:[7,6,7,6,null,null]},
+    {no:11, kind:"자매", name:"북한2",   cap:8,  att:[6,5,6,5,null,null]},
+    {no:12, kind:"자매", name:"호일1",   cap:9,  att:[6,5,7,8,null,null]},
+    {no:13, kind:"자매", name:"호일2",   cap:10, att:[7,10,9,7,null,null]},
+    {no:14, kind:"자매", name:"러시아",  cap:13, att:[10,12,8,9,null,null]},
+    {no:15, kind:"자매", name:"중국.통일",cap:18,att:[8,5,8,10,null,null]},
+    {no:16, kind:"형제", name:"항공",    cap:12, att:[7,8,6,6,null,null]},
+    {no:17, kind:"형제", name:"실로암",  cap:5,  att:[1,1,2,3,null,null]},
+    {no:18, kind:"형제", name:"차이나",  cap:4,  att:[1,1,1,2,null,null]},
+    {no:19, kind:"형제", name:"투라",    cap:10, att:[5,6,4,7,null,null]},
+    {no:20, kind:"형제", name:"필리핀",  cap:5,  att:[4,1,1,3,null,null]},
+    {no:21, kind:"형제", name:"태국",    cap:4,  att:[3,1,3,3,null,null]},
+    {no:22, kind:"형제", name:"연해주",  cap:3,  att:[1,1,1,1,null,null]},
+    {no:23, kind:"형제", name:"중청",    cap:5,  att:[3,3,3,2,null,null]},
+    {no:24, kind:"형제", name:"새가족",  cap:null,att:[3,0,null,null,null,null]}
+  ];
+  var seongim = {no:"", kind:"섬김이", name:"섬김이", cap:13, att:[11,11,11,11,null,null]};
+
+  var absence = [
+    {room:"지구촌A", name:"이민구", weeks:3, reason:"병원입원 · 치료", pray:"질병 치료", memo:"입원 중 · 목자가 안부 확인"},
+    {room:"지구촌A", name:"설민주", weeks:2, reason:"여행", pray:"무사히 여행 다녀오길", memo:"이번 주 여행"},
+    {room:"수마트라", name:"김영자", weeks:3, reason:"개인사정", pray:"허리 통증", memo:"전화 연락 두 번 받지 못함"},
+    {room:"중국.통일", name:"박정순", weeks:2, reason:"가정사", pray:"며느리 출산 준비", memo:"손주 돌봄"},
+    {room:"호일1", name:"이순자", weeks:2, reason:"병원입원 · 치료", pray:"무릎 수술 회복", memo:"퇴원 후 안부 확인 예정"},
+    {room:"항공", name:"최봉수", weeks:3, reason:"여행", pray:"자녀 집 방문 중", memo:"다음 주 귀국 예정"},
+    {room:"러시아", name:"한명숙", weeks:2, reason:"개인사정", pray:"기도 부탁", memo:"목자가 심방 날짜 조율 중"},
+    {room:"북한1", name:"정옥분", weeks:2, reason:"가정사", pray:"아들 직장", memo:""}
+  ];
+
+  var prayers = [
+    {room:"지구촌A", name:"김순희", pray:"손주 수능"},
+    {room:"지구촌A", name:"이민구", pray:"질병 치료"},
+    {room:"지구촌A", name:"성일태", pray:"남편 여행 중"},
+    {room:"지구촌A", name:"설민주", pray:"무사히 여행 다녀오길"},
+    {room:"지구촌A", name:"김해진", pray:"딸 출산"},
+    {room:"지구촌A", name:"송이부", pray:"허리치료"},
+    {room:"라오스", name:"이영자", pray:"자녀 신앙"},
+    {room:"수마트라", name:"김영자", pray:"허리 통증"},
+    {room:"수마트라", name:"아디", pray:"고국 부모님 건강"},
+    {room:"중국.통일", name:"박정순", pray:"며느리 출산 준비"},
+    {room:"호일1", name:"최명숙", pray:"남편 건강 검진"},
+    {room:"호일1", name:"이순자", pray:"무릎 수술 회복"},
+    {room:"항공", name:"정길수", pray:"목자 사역 감당"},
+    {room:"러시아", name:"한명숙", pray:"기도 부탁"},
+    {room:"북한1", name:"정옥분", pray:"아들 직장"}
+  ];
+
+  var auth = [
+    {name:"(담당 목사님)", role:"담당목사", room:"전체", applied:"2026-01-04", ok:true, by:"—", date:"2026-01-04", fixed:true},
+    {name:"권태석", role:"부장집사", room:"전체", applied:"2026-01-04", ok:true, by:"담당 목사님", date:"2026-01-04", fixed:true},
+    {name:"김순희", role:"목자", room:"지구촌A", applied:"2026-01-04", ok:true, by:"담당 목사님", date:"2026-01-04"},
+    {name:"박정순", role:"목자", room:"중국.통일", applied:"2026-01-04", ok:true, by:"권태석", date:"2026-01-04"},
+    {name:"이영자", role:"목자", room:"라오스", applied:"2026-01-04", ok:true, by:"권태석", date:"2026-01-04"},
+    {name:"최명숙", role:"목자", room:"호일1", applied:"2026-01-04", ok:true, by:"권태석", date:"2026-01-11"},
+    {name:"정길수", role:"목자", room:"항공", applied:"2026-01-11", ok:false, by:"", date:""},
+    {name:"한미자", role:"목자", room:"수마트라", applied:"2026-01-11", ok:false, by:"", date:""}
+  ];
+
+  var state = { role:"shepherd", date:"2026-06-04", tab:"stats", prayFilter:"전체" };
+
+  /* ---------------- 도우미 ---------------- */
+  function $(id){ return document.getElementById(id); }
+  function pad(n){ return n < 10 ? "0" + n : "" + n; }
+  function todayStr(){
+    var d = new Date();
+    return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if(cls){ e.className = cls; }
+    if(text !== undefined && text !== null){ e.textContent = text; }
+    return e;
+  }
+  var toastTimer = null;
+  function toast(msg){
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    if(toastTimer){ clearTimeout(toastTimer); }
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+
+  /* ---------------- 목자 화면 ---------------- */
+  function renderDates(){
+    var bar = $("datebar");
+    bar.textContent = "";
+    DATES.forEach(function(d){
+      var b = el("button", "date-chip" + (d.key === state.date ? " active" : ""));
+      b.type = "button";
+      b.setAttribute("data-date", d.key);
+      b.appendChild(el("b", null, d.label));
+      b.appendChild(el("span", null, d.tag || (d.key === state.date ? "보는 중" : "지난 예배")));
+      b.addEventListener("click", function(){
+        state.date = d.key;
+        renderDates();
+        renderMembers();
+        updateSummary();
+        updateSaveMeta();
+      });
+      bar.appendChild(b);
+    });
+  }
+
+  function memberState(m){
+    var day = attendance[state.date] || {};
+    return day[m.id] || {status:"attend", reason:""};
+  }
+
+  function updateSummary(){
+    var att = 0, abs = 0;
+    members.forEach(function(m){
+      var s = memberState(m);
+      if(s.status === "attend"){ att++; } else { abs++; }
+    });
+    $("sum-cap").textContent = members.length;
+    $("sum-att").textContent = att;
+    $("sum-abs").textContent = abs;
+  }
+
+  function updateSaveMeta(){
+    var d = DATES.filter(function(x){ return x.key === state.date; })[0];
+    var label = d ? d.label : "";
+    $("save-meta").textContent = label + " · " + (savedDates[state.date] ? "저장됨 ✓" : "아직 저장 전");
+  }
+
+  function renderMembers(){
+    var list = $("member-list");
+    list.textContent = "";
+    members.forEach(function(m, idx){
+      var st = memberState(m);
+      var card = el("div", "member " + (st.status === "attend" ? "is-attend" : "is-absent"));
+      card.setAttribute("data-id", String(m.id));
+
+      var top = el("div", "m-top");
+      top.appendChild(el("div", "m-no", String(idx + 1)));
+      top.appendChild(el("div", "m-name", m.name));
+      if(m.role === "목자"){
+        top.appendChild(el("span", "badge-leader", "목자"));
+      } else if(m.role === "새가족"){
+        top.appendChild(el("span", "badge-new", "새가족"));
+      }
+
+      var tg = el("div", "toggle");
+      var btnA = el("button", "tg" + (st.status === "attend" ? " on-att" : ""), "출석");
+      btnA.type = "button";
+      btnA.setAttribute("data-act", "attend");
+      btnA.setAttribute("aria-pressed", st.status === "attend" ? "true" : "false");
+      var btnB = el("button", "tg" + (st.status === "absent" ? " on-abs" : ""), "결석");
+      btnB.type = "button";
+      btnB.setAttribute("data-act", "absent");
+      btnB.setAttribute("aria-pressed", st.status === "absent" ? "true" : "false");
+      tg.appendChild(btnA);
+      tg.appendChild(btnB);
+      top.appendChild(tg);
+      card.appendChild(top);
+
+      // 결석 사유
+      var rrow = el("div", "reason-row");
+      if(st.status !== "absent"){ rrow.hidden = true; }
+      rrow.appendChild(el("p", "reason-label", "결석 사유를 골라 주세요"));
+      var chips = el("div", "chips");
+      REASONS.forEach(function(r){
+        var isSel = (r === "직접입력")
+          ? (st.reason !== "" && REASONS.indexOf(st.reason) === -1 || st.reason === "직접입력")
+          : (st.reason === r);
+        var c = el("button", "chip" + (isSel ? " sel" : ""), r);
+        c.type = "button";
+        c.setAttribute("data-reason", r);
+        chips.appendChild(c);
+      });
+      rrow.appendChild(chips);
+      var other = el("input", "other-input");
+      other.type = "text";
+      other.placeholder = "직접 입력 (예: 교통편 문제)";
+      var custom = (st.reason && REASONS.indexOf(st.reason) === -1) ? st.reason : "";
+      other.value = custom;
+      other.setAttribute("data-role", "other");
+      if(st.reason !== "직접입력" && custom === ""){ other.hidden = true; }
+      rrow.appendChild(other);
+      card.appendChild(rrow);
+
+      // 기도제목
+      var pr = el("div", "prayer");
+      pr.appendChild(el("label", null, "기도제목"));
+      var pin = el("input");
+      pin.type = "text";
+      pin.value = m.pray || "";
+      pin.placeholder = "예: 손주 수능, 질병 치료";
+      pin.setAttribute("data-role", "prayer");
+      pin.autocomplete = "off";
+      pr.appendChild(pin);
+      card.appendChild(pr);
+
+      list.appendChild(card);
+    });
+  }
+
+  // 출석/결석 토글 (이벤트 위임)
+  $("member-list").addEventListener("click", function(ev){
+    var t = ev.target;
+    while(t && t !== this && !(t.getAttribute && t.getAttribute("data-act"))){ t = t.parentNode; }
+    if(!t || t === this){ return; }
+    var act = t.getAttribute("data-act");
+    var card = t.closest(".member");
+    if(!card){ return; }
+    var id = Number(card.getAttribute("data-id"));
+    var day = attendance[state.date] || (attendance[state.date] = {});
+    var cur = day[id] || {status:"attend", reason:""};
+    if(act === "absent" && cur.status === "absent"){
+      // 이미 결석이면 그대로
+    } else if(act === "absent"){
+      cur.status = "absent";
+      if(cur.reason === ""){ cur.reason = ""; }
+    } else {
+      cur.status = "attend";
+    }
+    day[id] = cur;
+
+    card.classList.toggle("is-attend", cur.status === "attend");
+    card.classList.toggle("is-absent", cur.status === "absent");
+    var a = card.querySelector('[data-act="attend"]');
+    var b = card.querySelector('[data-act="absent"]');
+    a.classList.toggle("on-att", cur.status === "attend");
+    b.classList.toggle("on-abs", cur.status === "absent");
+    a.setAttribute("aria-pressed", cur.status === "attend" ? "true" : "false");
+    b.setAttribute("aria-pressed", cur.status === "absent" ? "true" : "false");
+    var rrow = card.querySelector(".reason-row");
+    rrow.hidden = (cur.status !== "absent");
+    if(cur.status === "absent" && cur.reason === ""){
+      var first = rrow.querySelector('[data-reason="병원입원 · 치료"]');
+      if(first){ first.classList.add("sel"); }
+      cur.reason = "병원입원 · 치료";
+    }
+    savedDates[state.date] = false;
+    updateSummary();
+    updateSaveMeta();
+  });
+
+  // 결석 사유 칩
+  $("member-list").addEventListener("click", function(ev){
+    var t = ev.target;
+    while(t && t !== this && !(t.getAttribute && t.getAttribute("data-reason"))){ t = t.parentNode; }
+    if(!t || t === this){ return; }
+    var r = t.getAttribute("data-reason");
+    var card = t.closest(".member");
+    var id = Number(card.getAttribute("data-id"));
+    var day = attendance[state.date] || (attendance[state.date] = {});
+    var cur = day[id] || {status:"absent", reason:""};
+    var other = card.querySelector('[data-role="other"]');
+    var chips = card.querySelectorAll(".chip");
+    for(var i = 0; i < chips.length; i++){ chips[i].classList.remove("sel"); }
+    t.classList.add("sel");
+    if(r === "직접입력"){
+      cur.reason = "직접입력";
+      other.hidden = false;
+      other.value = "";
+      other.focus();
+    } else {
+      cur.reason = r;
+      other.hidden = true;
+      other.value = "";
+    }
+    day[id] = cur;
+    savedDates[state.date] = false;
+    updateSaveMeta();
+  });
+
+  // 직접입력
+  $("member-list").addEventListener("input", function(ev){
+    var t = ev.target;
+    if(!t.getAttribute){ return; }
+    var role = t.getAttribute("data-role");
+    var card = t.closest(".member");
+    if(!card){ return; }
+    var id = Number(card.getAttribute("data-id"));
+    if(role === "prayer"){
+      var m = members.filter(function(x){ return x.id === id; })[0];
+      if(m){ m.pray = t.value; }
+    } else if(role === "other"){
+      var day = attendance[state.date] || (attendance[state.date] = {});
+      var cur = day[id] || {status:"absent", reason:""};
+      cur.reason = t.value.trim() === "" ? "직접입력" : t.value;
+      day[id] = cur;
+      savedDates[state.date] = false;
+    }
+  });
+
+  $("btn-save").addEventListener("click", function(){
+    savedDates[state.date] = true;
+    var d = DATES.filter(function(x){ return x.key === state.date; })[0];
+    var att = 0, abs = 0;
+    members.forEach(function(m){
+      if(memberState(m).status === "attend"){ att++; } else { abs++; }
+    });
+    updateSaveMeta();
+    toast("💾 " + (d ? d.label : "") + " 출석 저장 완료 — 출석 " + att + "명 · 결석 " + abs + "명");
+  });
+
+  /* ----- 새 인원 추가 ----- */
+  function openMemberModal(){
+    $("mm-name").value = "";
+    $("mm-pray").value = "";
+    var radios = document.getElementsByName("mm-kind");
+    for(var i = 0; i < radios.length; i++){ radios[i].checked = (i === 0); }
+    $("member-modal").hidden = false;
+    setTimeout(function(){ $("mm-name").focus(); }, 30);
+  }
+  function closeMemberModal(){ $("member-modal").hidden = true; }
+
+  $("btn-add-member").addEventListener("click", openMemberModal);
+  $("mm-cancel").addEventListener("click", closeMemberModal);
+  $("member-modal").addEventListener("click", function(ev){
+    if(ev.target === this){ closeMemberModal(); }
+  });
+  $("mm-ok").addEventListener("click", function(){
+    var name = $("mm-name").value.trim();
+    if(name === ""){
+      toast("성명을 적어 주세요");
+      $("mm-name").focus();
+      return;
+    }
+    var kind = "새가족";
+    var radios = document.getElementsByName("mm-kind");
+    for(var i = 0; i < radios.length; i++){ if(radios[i].checked){ kind = radios[i].value; } }
+    var pray = $("mm-pray").value.trim();
+    var m = {id: nextMemberId++, name: name, role: kind, pray: pray};
+    members.push(m);
+    DATES.forEach(function(d){
+      if(!attendance[d.key]){ attendance[d.key] = {}; }
+      attendance[d.key][m.id] = {status:"attend", reason:""};
+    });
+    savedDates[state.date] = false;
+    closeMemberModal();
+    renderMembers();
+    updateSummary();
+    updateSaveMeta();
+    toast("✅ " + name + " 님을 " + (kind === "새가족" ? "새가족" : "회원") + "으로 추가했습니다 (정원 " + members.length + "명)");
+    var cards = document.querySelectorAll(".member");
+    if(cards.length){ cards[cards.length - 1].scrollIntoView({block:"center"}); }
+  });
+
+  /* ---------------- 관리자: 전체 출석현황 ---------------- */
+  function avg(arr){
+    var vals = arr.filter(function(v){ return v !== null && v !== undefined && v !== ""; });
+    if(!vals.length){ return null; }
+    var s = 0;
+    vals.forEach(function(v){ s += Number(v); });
+    return s / vals.length;
+  }
+  function fmtAvg(v){
+    if(v === null){ return "—"; }
+    return (Math.round(v * 10) / 10).toFixed(1);
+  }
+
+  function buildRow(r, isNew){
+    var tr = document.createElement("tr");
+    if(isNew){ tr.className = "newroom"; }
+    tr.appendChild(el("td", null, r.no === "" ? "" : String(r.no)));
+    var tdRoom = el("td", "room", r.name);
+    tr.appendChild(tdRoom);
+    tr.appendChild(el("td", null, r.cap === null || r.cap === "" ? "" : String(r.cap)));
+    r.att.forEach(function(v, i){
+      var td = el("td", v === null ? "empty" : null, v === null ? "—" : String(v));
+      if(v === null){ td.title = "아직 예배 전"; }
+      tr.appendChild(td);
+    });
+    tr.appendChild(el("td", null, fmtAvg(avg(r.att))));
+    return tr;
+  }
+
+  function sumOf(list){
+    var out = [];
+    for(var i = 0; i < 6; i++){
+      var any = false, s = 0;
+      list.forEach(function(r){
+        var v = r.att[i];
+        if(v !== null && v !== undefined){ any = true; s += Number(v); }
+      });
+      out.push(any ? s : null);
+    }
+    return out;
+  }
+
+  function renderStats(){
+    var body = $("stats-body");
+    body.textContent = "";
+    var jama = rooms.filter(function(r){ return r.kind === "자매"; });
+    var hyung = rooms.filter(function(r){ return r.kind === "형제"; });
+
+    jama.forEach(function(r){ body.appendChild(buildRow(r, r.isNew)); });
+    var sj = sumOf(jama);
+    var trJ = document.createElement("tr");
+    trJ.className = "sub";
+    var t1 = el("td", "room", "자매소계");
+    t1.colSpan = 3;
+    t1.style.textAlign = "center";
+    trJ.appendChild(t1);
+    sj.forEach(function(v){ trJ.appendChild(el("td", null, v === null ? "—" : String(v))); });
+    trJ.appendChild(el("td", null, fmtAvg(avg(sj))));
+    body.appendChild(trJ);
+
+    hyung.forEach(function(r){ body.appendChild(buildRow(r, r.isNew)); });
+    var sh = sumOf(hyung);
+    var trH = document.createElement("tr");
+    trH.className = "sub";
+    var t2 = el("td", "room", "형제소계");
+    t2.colSpan = 3;
+    t2.style.textAlign = "center";
+    trH.appendChild(t2);
+    sh.forEach(function(v){ trH.appendChild(el("td", null, v === null ? "—" : String(v))); });
+    trH.appendChild(el("td", null, fmtAvg(avg(sh))));
+    body.appendChild(trH);
+
+    body.appendChild(buildRow(seongim, false));
+
+    var st = sumOf([{att: sj}, {att: sh}, {att: seongim.att}]);
+    var trT = document.createElement("tr");
+    trT.className = "total";
+    var t3 = el("td", "room", "총출석인원");
+    t3.colSpan = 3;
+    t3.style.textAlign = "center";
+    trT.appendChild(t3);
+    st.forEach(function(v){ trT.appendChild(el("td", null, v === null ? "—" : String(v))); });
+    trT.appendChild(el("td", null, fmtAvg(avg(st))));
+    body.appendChild(trT);
+  }
+
+  /* ----- 새 사랑방 추가 ----- */
+  function openRoomModal(){
+    $("rm-name").value = "";
+    $("rm-cap").value = "8";
+    var radios = document.getElementsByName("rm-kind");
+    for(var i = 0; i < radios.length; i++){ radios[i].checked = (i === 0); }
+    $("room-modal").hidden = false;
+    setTimeout(function(){ $("rm-name").focus(); }, 30);
+  }
+  function closeRoomModal(){ $("room-modal").hidden = true; }
+
+  $("btn-add-room").addEventListener("click", openRoomModal);
+  $("rm-cancel").addEventListener("click", closeRoomModal);
+  $("room-modal").addEventListener("click", function(ev){
+    if(ev.target === this){ closeRoomModal(); }
+  });
+  $("rm-ok").addEventListener("click", function(){
+    var name = $("rm-name").value.trim();
+    if(name === ""){ toast("사랑방 이름을 적어 주세요"); $("rm-name").focus(); return; }
+    var kind = "자매";
+    var radios = document.getElementsByName("rm-kind");
+    for(var i = 0; i < radios.length; i++){ if(radios[i].checked){ kind = radios[i].value; } }
+    var cap = Number($("rm-cap").value);
+    if(!cap || cap < 1 || cap > 60){ toast("정원을 1~60 사이로 적어 주세요"); return; }
+    var maxNo = 0;
+    rooms.forEach(function(r){ if(typeof r.no === "number" && r.no > maxNo){ maxNo = r.no; } });
+    var room = {no: maxNo + 1, kind: kind, name: name, cap: cap, att:[null,null,null,null,null,null], isNew:true};
+    // 같은 구분의 마지막 사랑방 뒤에 넣기
+    var idx = -1;
+    rooms.forEach(function(r, i){ if(r.kind === kind){ idx = i; } });
+    if(idx === -1){ rooms.push(room); } else { rooms.splice(idx + 1, 0, room); }
+    closeRoomModal();
+    renderStats();
+    toast("🏠 " + name + " 사랑방(" + kind + "·정원 " + cap + "명)을 추가했습니다. 목자가 출석을 저장하면 소계·총출석인원에 더해집니다.");
+    var trs = document.querySelectorAll("#stats-body tr.newroom");
+    if(trs.length){ trs[trs.length - 1].scrollIntoView({block:"center"}); }
+  });
+
+  /* ----- CSV 내려받기 ----- */
+  function csvCell(v){ return "\"" + String(v).replace(/"/g, "\"\"") + "\""; }
+  function downloadCSV(){
+    var lines = [];
+    lines.push(["번호","구분","사랑방","정원","5월 7일","5월 14일","5월 21일","6월 4일","6월 11일","6월 18일","5-6월 평균출석"].map(csvCell).join(","));
+    var jama = rooms.filter(function(r){ return r.kind === "자매"; });
+    var hyung = rooms.filter(function(r){ return r.kind === "형제"; });
+    function row(r){
+      var cells = [r.no, r.kind, r.name, r.cap === null ? "" : r.cap];
+      r.att.forEach(function(v){ cells.push(v === null ? "" : v); });
+      cells.push(fmtAvg(avg(r.att)));
+      return cells.map(csvCell).join(",");
+    }
+    jama.forEach(function(r){ lines.push(row(r)); });
+    var sj = sumOf(jama);
+    lines.push(["","","자매소계",""].concat(sj.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sj))]).map(csvCell).join(","));
+    hyung.forEach(function(r){ lines.push(row(r)); });
+    var sh = sumOf(hyung);
+    lines.push(["","","형제소계",""].concat(sh.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sh))]).map(csvCell).join(","));
+    lines.push(row(seongim));
+    var st = sumOf([{att:sj},{att:sh},{att:seongim.att}]);
+    lines.push(["","","총출석인원",""].concat(st.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(st))]).map(csvCell).join(","));
+    var csv = "\ufeff" + lines.join("\r\n");
+    var blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "포에버공동체_출석현황_" + todayStr() + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    toast("📥 엑셀(CSV) 파일을 내려받았습니다");
+  }
+  $("btn-csv").addEventListener("click", downloadCSV);
+
+  /* ---------------- 관리자: 연속 결석 · 기도제목 ---------------- */
+  function renderAbsence(){
+    var list = $("absence-list");
+    list.textContent = "";
+    var sorted = absence.slice().sort(function(a,b){ return b.weeks - a.weeks; });
+    var c2 = 0, c3 = 0;
+    sorted.forEach(function(a){
+      if(a.weeks >= 3){ c3++; } else { c2++; }
+      var item = el("div", "aitem " + (a.weeks >= 3 ? "v3" : "v2"));
+      var left = el("div");
+      var who = el("div", "al-who");
+      who.appendChild(document.createTextNode(a.name + " "));
+      var tag = el("span", "al-tag " + (a.weeks >= 3 ? "tag-3" : "tag-2"), a.weeks + "주 연속 결석 · " + (a.weeks >= 3 ? "심방 필요" : "주의"));
+      who.appendChild(tag);
+      left.appendChild(who);
+      left.appendChild(el("div", "al-meta", a.room + " 사랑방 · 사유: " + a.reason + (a.memo ? " · " + a.memo : "")));
+      left.appendChild(el("div", "al-meta", "기도제목: " + (a.pray || "—")));
+      item.appendChild(left);
+      list.appendChild(item);
+    });
+    $("cnt-a2").textContent = c2;
+    $("cnt-a3").textContent = c3;
+    $("cnt-pray").textContent = prayers.length;
+  }
+
+  function renderPrayFilter(){
+    var sel = $("pray-filter");
+    sel.textContent = "";
+    var names = [];
+    prayers.forEach(function(p){ if(names.indexOf(p.room) === -1){ names.push(p.room); } });
+    var optAll = el("option", null, "전체 사랑방");
+    optAll.value = "전체";
+    sel.appendChild(optAll);
+    names.forEach(function(n){
+      var o = el("option", null, n);
+      o.value = n;
+      sel.appendChild(o);
+    });
+    sel.value = state.prayFilter;
+  }
+
+  function renderPrayers(){
+    var grid = $("pray-grid");
+    grid.textContent = "";
+    var rows = prayers.filter(function(p){ return state.prayFilter === "전체" || p.room === state.prayFilter; });
+    if(!rows.length){
+      grid.appendChild(el("p", "muted", "등록된 기도제목이 없습니다."));
+      return;
+    }
+    rows.forEach(function(p){
+      var c = el("div", "pray-card");
+      c.appendChild(el("div", "pc-name", p.name));
+      c.appendChild(el("div", "pc-room", p.room + " 사랑방"));
+      c.appendChild(el("p", null, p.pray));
+      grid.appendChild(c);
+    });
+  }
+
+  $("pray-filter").addEventListener("change", function(){
+    state.prayFilter = this.value;
+    renderPrayers();
+  });
+
+  /* ---------------- 관리자: 접근 권한 승인 ---------------- */
+  function renderAuth(){
+    var body = $("auth-body");
+    body.textContent = "";
+    var okCount = 0, waitCount = 0;
+    auth.forEach(function(a, i){
+      if(a.ok){ okCount++; } else { waitCount++; }
+      var tr = document.createElement("tr");
+      tr.setAttribute("data-idx", String(i));
+      tr.appendChild(el("td", null, a.name));
+      tr.appendChild(el("td", null, a.role));
+      tr.appendChild(el("td", null, a.room));
+      tr.appendChild(el("td", null, a.applied));
+      var st = el("td", "state " + (a.ok ? "ok" : "wait"), a.ok ? "승인완료" : "대기");
+      tr.appendChild(st);
+      tr.appendChild(el("td", null, a.ok ? (a.by === "—" ? a.date : a.by + (a.date ? " · " + a.date : "")) : "—"));
+      var td = document.createElement("td");
+      if(a.fixed){
+        td.appendChild(el("span", "lock", "고정"));
+      } else {
+        var b = el("button", "tbtn" + (a.ok ? " cancel" : ""), a.ok ? "승인취소" : "승인");
+        b.type = "button";
+        b.setAttribute("data-auth", String(i));
+        td.appendChild(b);
+      }
+      tr.appendChild(td);
+      body.appendChild(tr);
+    });
+    $("cnt-ok").textContent = okCount;
+    $("cnt-wait").textContent = waitCount;
+  }
+
+  $("auth-body").addEventListener("click", function(ev){
+    var b = ev.target;
+    if(!b.getAttribute || !b.getAttribute("data-auth")){ return; }
+    var idx = Number(b.getAttribute("data-auth"));
+    var a = auth[idx];
+    if(!a || a.fixed){ return; }
+    if(a.ok){
+      a.ok = false;
+      a.by = "";
+      a.date = "";
+      toast("🔒 " + a.name + " 님의 " + a.room + " 사랑방 접근 권한을 취소했습니다");
+    } else {
+      a.ok = true;
+      a.by = "권태석";
+      a.date = todayStr();
+      toast("✅ " + a.name + " 님(" + a.room + ") 권한을 승인했습니다 — 이제 본인 사랑방만 열립니다");
+    }
+    renderAuth();
+  });
+
+  var applicantPool = [
+    {name:"오미란", room:"북한2"},
+    {name:"김복순", room:"몽골"},
+    {name:"서정자", room:"백마소망"}
+  ];
+  var poolIdx = 0;
+  $("btn-add-applicant").addEventListener("click", function(){
+    if(poolIdx >= applicantPool.length){ poolIdx = 0; }
+    var p = applicantPool[poolIdx++];
+    auth.push({name:p.name, role:"목자", room:p.room, applied:todayStr(), ok:false, by:"", date:""});
+    renderAuth();
+    toast("📨 " + p.name + " 님의 목자 권한 신청이 들어왔습니다 — 승인 대기");
+    var rows = document.querySelectorAll("#auth-body tr");
+    if(rows.length){ rows[rows.length - 1].scrollIntoView({block:"center"}); }
+  });
+
+  function setRole(role){
+    state.role = role;
+    var isShep = role === "shepherd";
+    $("view-shepherd").hidden = !isShep;
+    $("view-admin").hidden = isShep;
+    $("btn-shepherd").classList.toggle("active", isShep);
+    $("btn-admin").classList.toggle("active", !isShep);
+    $("btn-shepherd").setAttribute("aria-pressed", isShep ? "true" : "false");
+    $("btn-admin").setAttribute("aria-pressed", isShep ? "false" : "true");
+    if(!isShep){ renderStats(); renderAbsence(); renderPrayFilter(); renderPrayers(); renderAuth(); }
+    try{ window.scrollTo({top:0, behavior:"auto"}); }catch(e){ window.scrollTo(0, 0); }
+  }
+
+  $("btn-shepherd").addEventListener("click", function(){ setRole("shepherd"); });
+  $("btn-admin").addEventListener("click", function(){ setRole("admin"); });
+
+  function setTab(tab){
+    state.tab = tab;
+    var map = {stats:"panel-stats", absence:"panel-absence", auth:"panel-auth"};
+    var btnMap = {stats:"tab-stats", absence:"tab-absence", auth:"tab-auth"};
+    Object.keys(map).forEach(function(k){
+      $(map[k]).hidden = (k !== tab);
+      $(btnMap[k]).classList.toggle("active", k === tab);
+      $(btnMap[k]).setAttribute("aria-selected", k === tab ? "true" : "false");
+    });
+    if(tab === "stats"){ renderStats(); }
+    if(tab === "absence"){ renderAbsence(); renderPrayFilter(); renderPrayers(); }
+    if(tab === "auth"){ renderAuth(); }
+  }
+  $("tab-stats").addEventListener("click", function(){ setTab("stats"); });
+  $("tab-absence").addEventListener("click", function(){ setTab("absence"); });
+  $("tab-auth").addEventListener("click", function(){ setTab("auth"); });
+
+  window.addEventListener("scroll", function(){
+    var bar = $("savebar");
+    if(!bar){ return; }
+    var pin = (window.scrollY || document.documentElement.scrollTop) > 200 && !$("view-shepherd").hidden;
+    bar.classList.toggle("pin", pin);
+    document.body.classList.toggle("bar-pinned", pin);
+  }, {passive:true});
+
+  document.addEventListener("keydown", function(ev){
+    if(ev.key === "Escape"){
+      if(!$("member-modal").hidden){ closeMemberModal(); }
+      if(!$("room-modal").hidden){ closeRoomModal(); }
+    }
+  });
+
+  /* ---------------- 시작 ---------------- */
+  renderDates();
+  renderMembers();
+  updateSummary();
+  updateSaveMeta();
+  renderStats();
+})();
+</script>
+</body>
+</html>
