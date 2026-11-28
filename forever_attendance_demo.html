@@ -343,6 +343,111 @@
     .panel{padding:10px;}
     .tab{font-size:14.5px;padding:6px 12px;}
   }
+
+  /* ================= v2: 회원 사진 아바타 ================= */
+  .avatar{
+    position:relative;flex:none;width:52px;height:52px;border-radius:50%;
+    background:#f3e7d8;color:#7a5a3a;border:2px solid #fff;
+    box-shadow:0 0 0 1px var(--line);display:flex;align-items:center;justify-content:center;
+  }
+  .avatar .av-face{
+    width:100%;height:100%;border-radius:50%;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;
+  }
+  .avatar .av-face img{width:100%;height:100%;object-fit:cover;display:block;}
+  .avatar .m-no{
+    position:absolute;right:-4px;bottom:-4px;width:23px;height:23px;border-radius:50%;
+    background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;border:2px solid #fff;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .avatar.av-sm{width:40px;height:40px;}
+  .avatar.av-sm .av-face{font-size:16px;}
+  .avatar.av-xs{width:32px;height:32px;}
+  .avatar.av-xs .av-face{font-size:13.5px;}
+  .m-ident{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px;align-items:flex-start;}
+  .m-name-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;min-width:0;}
+  .photo-btn{
+    min-height:31px;padding:0 10px;border-radius:999px;cursor:pointer;
+    border:1.5px dashed #c2ac86;background:#fffdf7;font-family:inherit;font-size:12.5px;
+    font-weight:700;color:#7a5a2e;display:inline-flex;align-items:center;gap:4px;
+  }
+  .photo-btn.has{border-style:solid;border-color:var(--green);background:var(--green-soft);color:var(--green);}
+  .photo-btn:active{transform:translateY(1px);}
+  .photo-btn:focus-visible{outline:3px solid #7aa2e3;outline-offset:2px;}
+
+  /* ================= v2: 관리자 대시보드 ================= */
+  .dash{margin-bottom:14px;}
+  .dash-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 8px;}
+  .dash-head h3{font-size:17px;margin:0;color:var(--navy);}
+  .live{
+    font-size:11.5px;font-weight:700;color:var(--green);background:var(--green-soft);
+    border:1px solid #b2dcc4;border-radius:999px;padding:3px 9px;
+  }
+  .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  @media (min-width:880px){ .kpi{grid-template-columns:repeat(4,1fr);} }
+  .kpi-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;min-width:0;}
+  .k-lab{font-size:12.5px;color:var(--grey);font-weight:700;display:block;line-height:1.3;}
+  .kpi-card b{display:block;font-size:27px;line-height:1.18;color:var(--navy);margin-top:1px;}
+  .kpi-card b small{font-size:14px;font-weight:700;color:var(--grey);margin-left:2px;}
+  .k-note{font-size:11.5px;color:#8a9099;margin-top:2px;line-height:1.35;}
+  .kbar{height:7px;border-radius:999px;background:#e9edf5;margin-top:7px;overflow:hidden;}
+  .kbar i{display:block;height:100%;border-radius:999px;background:var(--navy2);}
+
+  .chart-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;}
+  .chart-title{font-size:15.5px;font-weight:700;color:var(--navy);margin:0 0 2px;}
+  .chart-note{font-size:12px;color:var(--grey);margin:0 0 10px;line-height:1.45;}
+  .wk-chart{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:end;
+    padding:8px 2px 0;border-top:1px dashed #dde2ea;
+  }
+  .wk-col{display:flex;flex-direction:column;align-items:center;min-width:0;}
+  .wk-val{font-size:14px;font-weight:700;color:var(--navy);line-height:1.2;}
+  .wk-track{
+    width:100%;max-width:64px;height:130px;display:flex;align-items:flex-end;margin:3px 0 4px;
+    background:repeating-linear-gradient(to top,transparent 0 31px,#e4e9f1 31px 32px);
+    border-radius:8px 8px 0 0;
+  }
+  .wk-bar{
+    width:100%;border-radius:8px 8px 0 0;min-height:8px;
+    background:linear-gradient(180deg,#5580c6,#1f3864);
+  }
+  .wk-pct{font-size:12.5px;font-weight:700;color:var(--green);line-height:1.2;}
+  .wk-lab{font-size:12px;color:#4a5058;text-align:center;line-height:1.25;margin-top:1px;}
+  .wk-lab b{display:block;font-size:12.5px;color:#1b1b1b;}
+
+  .rate-grid{display:grid;gap:5px 16px;}
+  @media (min-width:820px){ .rate-grid{grid-template-columns:1fr 1fr;} }
+  .rate-row{display:grid;grid-template-columns:84px 1fr 52px;gap:7px;align-items:center;min-width:0;}
+  .rate-name{font-size:13px;color:#33383f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .rate-name .rno{display:inline-block;min-width:17px;color:#9aa1ab;font-size:11px;}
+  .rate-track{height:14px;background:#eef1f6;border-radius:999px;overflow:hidden;}
+  .rate-track.none{background:repeating-linear-gradient(45deg,#f2f4f8 0 6px,#e6ebf2 6px 12px);}
+  .rate-fill{height:100%;border-radius:999px;min-width:3px;}
+  .rate-val{font-size:13px;font-weight:700;text-align:right;white-space:nowrap;}
+  .rate-val.none{color:#9aa1ab;font-weight:500;font-size:11.5px;}
+  .rate-legend{
+    display:flex;gap:10px 14px;flex-wrap:wrap;font-size:12px;color:#4a5058;
+    margin-top:10px;padding-top:8px;border-top:1px solid #eef1f6;
+  }
+  .rate-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px;}
+  td.rate{font-weight:700;}
+  .al-head{display:flex;gap:10px;align-items:flex-start;min-width:0;}
+  .al-head > div:last-child{min-width:0;}
+  .pc-head{display:flex;gap:8px;align-items:center;min-width:0;}
+  .pc-head > div:last-child{min-width:0;}
+  .photo-pick{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .photo-pick .btn{min-height:46px;padding:0 12px;font-size:14.5px;}
+  .photo-pick .btn.plain{border-color:#c9cdd4;color:#5f6368;}
+  .mm-photo-slot{flex:none;}
+  .photo-hint{font-size:12px;color:#8a9099;margin-top:5px;line-height:1.4;}
+  .sync-note{font-size:12px;color:#7a6420;background:var(--yellow);border:1px solid #e8d98f;
+    border-radius:8px;padding:6px 10px;margin:8px 0 0;line-height:1.45;}
+
+  /* 좁은 화면에서는 출석·결석 버튼을 카드 전체 폭으로 (시니어 목자님이 누르기 쉽게) */
+  @media (max-width:899px){
+    .m-top .toggle{flex:1 1 100%;margin-left:0;margin-top:2px;}
+    .m-top .toggle .tg{flex:1 1 0;}
+  }
 </style>
 </head>
 <body>
@@ -415,11 +520,39 @@
 
     <!-- 탭 1 -->
     <div class="panel" id="panel-stats">
+      <!-- v2: 한눈에 보는 시각 대시보드 -->
+      <div class="dash" id="dashboard">
+        <div class="dash-head">
+          <h3>한눈에 보는 출석 요약</h3>
+          <span class="live">● 입력하면 바로 반영</span>
+        </div>
+        <div class="kpi" id="kpi"></div>
+
+        <div class="chart-card">
+          <p class="chart-title">📈 주간별 출석 인원 추이</p>
+          <p class="chart-note">전체 사랑방 합계입니다. 숫자는 출석 인원, 아래 %는 정원(<span id="wk-cap">228</span>명) 대비 출석 비율입니다.</p>
+          <div class="wk-chart" id="wk-chart" role="img" aria-label="주간별 총출석 인원 막대그래프"></div>
+        </div>
+
+        <div class="chart-card">
+          <p class="chart-title">🏠 사랑방별 평균 출석률</p>
+          <p class="chart-note">5-6월 평균출석 ÷ 정원으로 계산했습니다. 출석률이 높은 사랑방부터 차례대로 놓았습니다.</p>
+          <div class="rate-grid" id="rate-grid"></div>
+          <div class="rate-legend">
+            <span><i style="background:#1e7a46"></i>80% 이상 · 아주 좋음</span>
+            <span><i style="background:#2c6cb0"></i>65~79% · 좋음</span>
+            <span><i style="background:#d99a00"></i>50~64% · 조금 낮음</span>
+            <span><i style="background:#b3261e"></i>50% 미만 · 돌봄 필요</span>
+            <span><i style="background:#dde2ea"></i>정원 미정 · 자료 없음</span>
+          </div>
+        </div>
+      </div>
+
       <div class="toolbar">
         <button class="btn solid" id="btn-add-room" type="button">+ 새 사랑방 추가</button>
         <button class="btn" id="btn-csv" type="button">📥 엑셀(CSV) 내려받기</button>
       </div>
-      <p class="table-note">각 사랑방 목자가 저장한 출석 인원입니다. 사랑방을 추가하면 아래 소계·총출석인원과 평균이 바로 다시 계산됩니다.</p>
+      <p class="table-note">각 사랑방 목자가 저장한 출석 인원입니다. 사랑방을 추가하면 아래 소계·총출석인원과 평균·출석률이 바로 다시 계산됩니다.</p>
       <p class="scroll-hint">← 표를 옆으로 넘기면 6월 출석과 평균까지 보입니다</p>
       <div class="table-scroll">
         <table id="stats-table">
@@ -431,6 +564,7 @@
               <th class="month" colspan="3">5월</th>
               <th class="month" colspan="3">6월</th>
               <th rowspan="2">5-6월<br>평균출석</th>
+              <th rowspan="2">출석률<br>(%)</th>
             </tr>
             <tr>
               <th>7일</th><th>14일</th><th>21일</th><th>4일</th><th>11일</th><th>18일</th>
@@ -440,11 +574,13 @@
         </table>
       </div>
       <p class="table-note" style="margin-top:8px;">※ 표의 정원·출석 수치는 기존 출석부 예시를 그대로 옮겼습니다. 새 시스템에서는 목자가 추가한 명단 인원과 저장한 출석이 그대로 집계됩니다.</p>
+      <p class="sync-note">🔄 <b>지구촌A는 목자 화면과 실시간으로 연결</b>되어 있습니다. 목자 화면에서 출석·결석을 바꾸거나 인원을 추가하면 위 요약 카드·그래프·표의 지구촌A 정원과 출석률이 바로 다시 계산됩니다.</p>
       <div class="legend">
         <span><i style="background:#fff;border:1px solid #ccd1da"></i>목자가 저장한 출석 인원</span>
         <span><i style="background:var(--yellow);border:1px solid #e8d98f"></i>아직 예배 전 (입력 전)</span>
         <span><i style="background:var(--navy-soft);border:1px solid #b9c8e4"></i>자매·형제 소계 / 총출석인원</span>
         <span><i style="background:var(--gold-soft);border:1px solid #e8cf8a"></i>이번 시연에서 새로 추가한 사랑방</span>
+        <span><i style="background:#1e7a46"></i>출석률 색 · 초록 80%↑ / 파랑 65%↑ / 노랑 50%↑ / 빨강 50%↓</span>
       </div>
     </div>
 
@@ -513,6 +649,16 @@
       <label for="mm-pray">기도제목 <span style="font-weight:400;color:#8a9099;">(비워두어도 됩니다)</span></label>
       <input id="mm-pray" type="text" placeholder="예: 새 직장 적응" autocomplete="off">
     </div>
+    <div class="field">
+      <label>📷 사진 첨부 <span style="font-weight:400;color:#8a9099;">(선택 — 넣으면 얼굴로도 확인됩니다)</span></label>
+      <div class="photo-pick">
+        <div class="mm-photo-slot" id="mm-photo-slot"></div>
+        <label class="btn" for="mm-photo">📷 사진 선택</label>
+        <button class="btn plain" id="mm-photo-clear" type="button">지움</button>
+        <input id="mm-photo" type="file" accept="image/*" hidden>
+      </div>
+      <p class="photo-hint">휴대폰 사진첩이나 내 사진에서 고르면 됩니다. 나중에 명단에서도 바꿀 수 있습니다.</p>
+    </div>
     <div class="m-actions">
       <button class="btn" id="mm-cancel" type="button">취소</button>
       <button class="btn solid" id="mm-ok" type="button">명단에 추가</button>
@@ -547,6 +693,8 @@
   </div>
 </div>
 
+<input type="file" id="photo-input" accept="image/*" hidden>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -564,8 +712,8 @@
   var COL_KEYS = ["2026-05-07","2026-05-14","2026-05-21","2026-06-04","2026-06-11","2026-06-18"];
 
   var members = [
-    {id:1, name:"김순희", role:"목자", pray:"손주 수능"},
-    {id:2, name:"이민구", role:"회원", pray:"질병 치료"},
+    {id:1, name:"김순희", role:"목자", pray:"손주 수능", ill:"sister"},
+    {id:2, name:"이민구", role:"회원", pray:"질병 치료", ill:"brother"},
     {id:3, name:"성일태", role:"회원", pray:"남편 여행 중"},
     {id:4, name:"설민주", role:"회원", pray:"무사히 여행 다녀오길"},
     {id:5, name:"김해진", role:"회원", pray:"딸 출산"},
@@ -704,6 +852,153 @@
     toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2600);
   }
 
+  /* ---------------- v2: 회원 사진 · 아바타 ---------------- */
+  var PASTELS = [
+    {bg:"#f7e6d2", fg:"#8a5a2b"}, {bg:"#e2eefb", fg:"#26557f"},
+    {bg:"#e8f2e0", fg:"#3f6a35"}, {bg:"#fbe8ee", fg:"#94405c"},
+    {bg:"#efe8fb", fg:"#5b3f8a"}, {bg:"#fdf2d8", fg:"#8a6a12"},
+    {bg:"#e0f2f3", fg:"#2a6a6e"}, {bg:"#f8e5df", fg:"#96453a"}
+  ];
+  var mmPhoto = null;
+  var photoTargetId = null;
+
+  function hashOf(s){
+    var h = 0;
+    for(var i = 0; i < s.length; i++){ h = (h * 31 + s.charCodeAt(i)) % 9973; }
+    return h;
+  }
+  function pastelOf(name){
+    return PASTELS[hashOf(name || "?") % PASTELS.length];
+  }
+  function memberByName(name){
+    for(var i = 0; i < members.length; i++){ if(members[i].name === name){ return members[i]; } }
+    return null;
+  }
+
+  // 샘플용 SVG 일러스트 아바타(자매·형제)
+  function illAvatar(kind){
+    var sister = kind === "sister";
+    var bg = sister ? "#fdeee0" : "#e8eef9";
+    var hair = sister ? "#9b7a5f" : "#6b6b6b";
+    var top = sister ? "#c7a2d6" : "#6f8fbb";
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+      '<rect width="100" height="100" fill="' + bg + '"/>' +
+      '<path d="M13 100c0-18 17-30 37-30s37 12 37 30z" fill="' + top + '"/>' +
+      '<circle cx="50" cy="42" r="21" fill="#f7d3b3"/>' +
+      (sister
+        ? '<path d="M28 42a22 22 0 0 1 44 0c0-14-3-25-22-25S28 28 28 42z" fill="' + hair + '"/>' +
+          '<circle cx="50" cy="15" r="9" fill="' + hair + '"/>'
+        : '<path d="M28 40a22 22 0 0 1 44 0c0-13-4-23-22-23S28 27 28 40z" fill="' + hair + '"/>') +
+      '<circle cx="42" cy="43" r="6.5" fill="none" stroke="#5b4636" stroke-width="2.2"/>' +
+      '<circle cx="58" cy="43" r="6.5" fill="none" stroke="#5b4636" stroke-width="2.2"/>' +
+      '<path d="M48.5 43h3" stroke="#5b4636" stroke-width="2.2"/>' +
+      '<path d="M45 54q5 4 10 0" stroke="#c0705a" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+      (sister ? '' : '<path d="M40 34q10 3 20 0" stroke="#6b6b6b" stroke-width="2" fill="none"/>') +
+      '</svg>';
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+
+  // 아바타 노드: 사진 > 일러스트 > 성씨 첫 글자(파스텔)
+  function avatarNode(opt){
+    var a = el("div", "avatar" + (opt.size === "sm" ? " av-sm" : opt.size === "xs" ? " av-xs" : ""));
+    var face = el("div", "av-face");
+    var src = opt.photo || (opt.ill ? illAvatar(opt.ill) : null);
+    if(src){
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = (opt.name || "회원") + " 사진";
+      face.appendChild(img);
+    } else {
+      var p = pastelOf(opt.name);
+      a.style.background = p.bg;
+      a.style.color = p.fg;
+      face.textContent = (opt.name || "?").charAt(0);
+    }
+    a.appendChild(face);
+    if(opt.no !== undefined && opt.no !== null){
+      a.appendChild(el("span", "m-no", String(opt.no)));
+    }
+    return a;
+  }
+
+  function openPhotoPicker(id){
+    photoTargetId = id;
+    var inp = $("photo-input");
+    inp.value = "";
+    inp.click();
+  }
+
+  // 고른 사진을 정사각형으로 줄여서(200px) 미리보기용으로 만듭니다
+  function shrinkImage(file, cb){
+    if(!file || !/^image\//.test(file.type || "")){ cb(null); return; }
+    var fr = new FileReader();
+    fr.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var S = 200;
+        var c = document.createElement("canvas");
+        c.width = S; c.height = S;
+        var cx = c.getContext("2d");
+        var w = img.width || S, h = img.height || S;
+        var side = Math.min(w, h);
+        try{
+          cx.drawImage(img, (w - side) / 2, (h - side) / 2, side, side, 0, 0, S, S);
+          cb(c.toDataURL("image/jpeg", 0.86));
+        }catch(e){ cb(null); }
+      };
+      img.onerror = function(){ cb(null); };
+      img.src = fr.result;
+    };
+    fr.onerror = function(){ cb(null); };
+    fr.readAsDataURL(file);
+  }
+
+  function updateMemberAvatar(id){
+    var m = members.filter(function(x){ return x.id === id; })[0];
+    var card = document.querySelector('.member[data-id="' + id + '"]');
+    if(!m || !card){ return; }
+    var old = card.querySelector(".avatar");
+    var noTxt = null;
+    if(old){ var n = old.querySelector(".m-no"); if(n){ noTxt = n.textContent; } }
+    var fresh = avatarNode({name:m.name, photo:m.photo, ill:m.ill, no:noTxt});
+    if(old){ old.parentNode.replaceChild(fresh, old); }
+    var pb = card.querySelector(".photo-btn");
+    if(pb){
+      pb.classList.toggle("has", !!m.photo);
+      pb.textContent = m.photo ? "📷 사진 변경" : "📷 사진";
+    }
+  }
+
+  $("photo-input").addEventListener("change", function(){
+    var f = this.files && this.files[0];
+    if(!f || photoTargetId === null){ return; }
+    var id = photoTargetId;
+    var tgtName = "";
+    var mm = members.filter(function(x){ return x.id === id; })[0];
+    if(mm){ tgtName = mm.name; }
+    shrinkImage(f, function(dataUrl){
+      if(!dataUrl){ toast("사진을 읽지 못했습니다. 다른 사진으로 다시 해 보세요."); return; }
+      var m = members.filter(function(x){ return x.id === id; })[0];
+      if(!m){ return; }
+      m.photo = dataUrl;
+      updateMemberAvatar(id);
+      renderAbsence();
+      renderPrayers();
+      toast("📷 " + tgtName + " 님 사진을 등록했습니다");
+    });
+  });
+
+  function renderMmPhoto(){
+    var slot = $("mm-photo-slot");
+    if(!slot){ return; }
+    slot.textContent = "";
+    var nm = $("mm-name").value.trim() || "새가족";
+    var node = avatarNode({name:nm, photo:mmPhoto});
+    node.style.width = "54px";
+    node.style.height = "54px";
+    slot.appendChild(node);
+  }
+
   /* ---------------- 목자 화면 ---------------- */
   function renderDates(){
     var bar = $("datebar");
@@ -756,14 +1051,22 @@
       card.setAttribute("data-id", String(m.id));
 
       var top = el("div", "m-top");
-      top.appendChild(el("div", "m-no", String(idx + 1)));
-      top.appendChild(el("div", "m-name", m.name));
+      top.appendChild(avatarNode({name:m.name, photo:m.photo, ill:m.ill, no:idx + 1}));
+      var idw = el("div", "m-ident");
+      var nrow = el("div", "m-name-row");
+      nrow.appendChild(el("div", "m-name", m.name));
       if(m.role === "목자"){
-        top.appendChild(el("span", "badge-leader", "목자"));
+        nrow.appendChild(el("span", "badge-leader", "목자"));
       } else if(m.role === "새가족"){
-        top.appendChild(el("span", "badge-new", "새가족"));
+        nrow.appendChild(el("span", "badge-new", "새가족"));
       }
-
+      idw.appendChild(nrow);
+      var pbtn = el("button", "photo-btn" + (m.photo ? " has" : ""), m.photo ? "📷 사진 변경" : "📷 사진");
+      pbtn.type = "button";
+      pbtn.setAttribute("data-photo", String(m.id));
+      pbtn.setAttribute("aria-label", m.name + " 사진 등록 · 변경");
+      idw.appendChild(pbtn);
+      top.appendChild(idw);
       var tg = el("div", "toggle");
       var btnA = el("button", "tg" + (st.status === "attend" ? " on-att" : ""), "출석");
       btnA.type = "button";
@@ -819,6 +1122,15 @@
     });
   }
 
+  // 카드의 📷 사진 버튼 → 기기 사진 고르기
+  $("member-list").addEventListener("click", function(ev){
+    var t = ev.target;
+    while(t && t !== this && !(t.getAttribute && t.getAttribute("data-photo"))){ t = t.parentNode; }
+    if(!t || t === this){ return; }
+    ev.preventDefault();
+    openPhotoPicker(Number(t.getAttribute("data-photo")));
+  });
+
   // 출석/결석 토글 (이벤트 위임)
   $("member-list").addEventListener("click", function(ev){
     var t = ev.target;
@@ -858,6 +1170,7 @@
     savedDates[state.date] = false;
     updateSummary();
     updateSaveMeta();
+    renderStats();
   });
 
   // 결석 사유 칩
@@ -926,10 +1239,30 @@
     $("mm-pray").value = "";
     var radios = document.getElementsByName("mm-kind");
     for(var i = 0; i < radios.length; i++){ radios[i].checked = (i === 0); }
+    mmPhoto = null;
+    $("mm-photo").value = "";
+    renderMmPhoto();
     $("member-modal").hidden = false;
     setTimeout(function(){ $("mm-name").focus(); }, 30);
   }
   function closeMemberModal(){ $("member-modal").hidden = true; }
+
+  $("mm-name").addEventListener("input", renderMmPhoto);
+  $("mm-photo").addEventListener("change", function(){
+    var f = this.files && this.files[0];
+    if(!f){ return; }
+    shrinkImage(f, function(dataUrl){
+      if(!dataUrl){ toast("사진을 읽지 못했습니다. 다른 사진으로 다시 해 보세요."); return; }
+      mmPhoto = dataUrl;
+      renderMmPhoto();
+    });
+  });
+  $("mm-photo-clear").addEventListener("click", function(){
+    mmPhoto = null;
+    $("mm-photo").value = "";
+    renderMmPhoto();
+    toast("첨부한 사진을 지웠습니다");
+  });
 
   $("btn-add-member").addEventListener("click", openMemberModal);
   $("mm-cancel").addEventListener("click", closeMemberModal);
@@ -947,18 +1280,21 @@
     var radios = document.getElementsByName("mm-kind");
     for(var i = 0; i < radios.length; i++){ if(radios[i].checked){ kind = radios[i].value; } }
     var pray = $("mm-pray").value.trim();
-    var m = {id: nextMemberId++, name: name, role: kind, pray: pray};
+    var m = {id: nextMemberId++, name: name, role: kind, pray: pray, photo: mmPhoto || null};
     members.push(m);
     DATES.forEach(function(d){
       if(!attendance[d.key]){ attendance[d.key] = {}; }
       attendance[d.key][m.id] = {status:"attend", reason:""};
     });
     savedDates[state.date] = false;
+    var hasPhoto = !!mmPhoto;
+    mmPhoto = null;
     closeMemberModal();
     renderMembers();
     updateSummary();
     updateSaveMeta();
-    toast("✅ " + name + " 님을 " + (kind === "새가족" ? "새가족" : "회원") + "으로 추가했습니다 (정원 " + members.length + "명)");
+    renderStats();
+    toast((hasPhoto ? "📷 " : "✅ ") + name + " 님을 " + (kind === "새가족" ? "새가족" : "회원") + "으로 추가했습니다 (정원 " + members.length + "명)");
     var cards = document.querySelectorAll(".member");
     if(cards.length){ cards[cards.length - 1].scrollIntoView({block:"center"}); }
   });
@@ -989,6 +1325,7 @@
       tr.appendChild(td);
     });
     tr.appendChild(el("td", null, fmtAvg(avg(r.att))));
+    tr.appendChild(rateCell(roomRate(r)));
     return tr;
   }
 
@@ -1005,7 +1342,209 @@
     return out;
   }
 
+  /* ---------------- v2: 출석률 · 시각 대시보드 ---------------- */
+  var COL_FULL = ["5월 7일","5월 14일","5월 21일","6월 4일","6월 11일","6월 18일"];
+  var COL_SHORT = ["5/7","5/14","5/21","6/4","6/11","6/18"];
+
+  function fmt1(v){
+    if(v === null || v === undefined || isNaN(v)){ return "—"; }
+    return (Math.round(v * 10) / 10).toFixed(1);
+  }
+  function rateColor(v){
+    if(v === null || v === undefined){ return "#9aa1ab"; }
+    if(v >= 80){ return "#1e7a46"; }
+    if(v >= 65){ return "#2c6cb0"; }
+    if(v >= 50){ return "#d99a00"; }
+    return "#b3261e";
+  }
+  function rateCell(rate){
+    var td;
+    if(rate === null || rate === undefined){
+      td = el("td", "rate", "—");
+      td.style.color = "#9aa1ab";
+      td.style.fontWeight = "400";
+      return td;
+    }
+    td = el("td", "rate", fmt1(rate));
+    td.style.color = rateColor(rate);
+    return td;
+  }
+
+  // 사랑방 한 곳의 (평균출석 ÷ 정원) 비율(%)
+  function roomRate(r){
+    if(!r || !r.cap){ return null; }
+    var vals = r.att.filter(function(v){ return v !== null && v !== undefined; });
+    if(!vals.length){ return null; }
+    var s = 0;
+    vals.forEach(function(v){ s += Number(v); });
+    return s / (vals.length * Number(r.cap)) * 100;
+  }
+
+  // 여러 사랑방 묶음의 주별 (출석/정원) 비율 평균(%)
+  function rateOf(list){
+    var rates = [];
+    for(var i = 0; i < 6; i++){
+      var att = 0, cap = 0, any = false;
+      list.forEach(function(r){
+        var v = r.att[i];
+        if(v === null || v === undefined || !r.cap){ return; }
+        any = true; att += Number(v); cap += Number(r.cap);
+      });
+      if(any && cap > 0){ rates.push(att / cap * 100); }
+    }
+    if(!rates.length){ return null; }
+    var s = 0;
+    rates.forEach(function(v){ s += v; });
+    return s / rates.length;
+  }
+
+  // 목자 화면의 지구촌A 입력을 전체 출석현황에 실시간으로 이어 줍니다
+  function syncShepherdRoom(){
+    var r = rooms.filter(function(x){ return x.name === "지구촌A"; })[0];
+    if(!r){ return; }
+    r.cap = members.length;
+    r.att = COL_KEYS.map(function(k){
+      if(!attendance[k]){ return null; }
+      var n = 0;
+      members.forEach(function(m){
+        var st = attendance[k][m.id];
+        if(!st || st.status === "attend"){ n++; }
+      });
+      return n;
+    });
+  }
+
+  function weekTotals(){
+    var rows = rooms.concat([seongim]);
+    return COL_KEYS.map(function(k, i){
+      var att = 0, cap = 0, any = false;
+      rows.forEach(function(r){
+        var v = r.att[i];
+        if(v === null || v === undefined){ return; }
+        any = true;
+        att += Number(v);
+        if(r.cap){ cap += Number(r.cap); }
+      });
+      return {label: COL_FULL[i], short: COL_SHORT[i], att: att, cap: cap, any: any};
+    });
+  }
+
+  function kpiCard(label, value, unit, note, rate){
+    var c = el("div", "kpi-card");
+    c.appendChild(el("span", "k-lab", label));
+    var b = document.createElement("b");
+    b.appendChild(document.createTextNode(value));
+    if(unit){ b.appendChild(el("small", null, unit)); }
+    if(rate !== null && rate !== undefined){ b.style.color = rateColor(rate); }
+    c.appendChild(b);
+    if(rate !== null && rate !== undefined){
+      var bar = el("div", "kbar");
+      var fill = el("i");
+      fill.style.width = Math.max(2, Math.min(100, rate)) + "%";
+      fill.style.background = rateColor(rate);
+      bar.appendChild(fill);
+      c.appendChild(bar);
+    }
+    if(note){ c.appendChild(el("div", "k-note", note)); }
+    return c;
+  }
+
+  function renderDashboard(){
+    var rows = rooms.concat([seongim]);
+    var jama = rooms.filter(function(r){ return r.kind === "자매"; });
+    var hyung = rooms.filter(function(r){ return r.kind === "형제"; }).concat([seongim]);
+    var wk = weekTotals().filter(function(w){ return w.any; });
+    var sumAtt = 0;
+    wk.forEach(function(w){ sumAtt += w.att; });
+    var avgAtt = wk.length ? sumAtt / wk.length : 0;
+    var totalCap = 0;
+    rows.forEach(function(r){ if(r.cap){ totalCap += Number(r.cap); } });
+    var allRate = rateOf(rows), jRate = rateOf(jama), hRate = rateOf(hyung);
+
+    var kpi = $("kpi");
+    kpi.textContent = "";
+    kpi.appendChild(kpiCard("전체 평균 출석", fmt1(avgAtt), "명",
+      "정원 " + totalCap + "명 · " + wk.length + "주 평균", null));
+    kpi.appendChild(kpiCard("전체 출석률", fmt1(allRate), "%",
+      "정원 대비 출석 비율", allRate));
+    kpi.appendChild(kpiCard("자매 평균 출석률", fmt1(jRate), "%",
+      "자매 " + jama.length + "개 사랑방", jRate));
+    kpi.appendChild(kpiCard("형제·섬김이 출석률", fmt1(hRate), "%",
+      "형제 " + (hyung.length - 1) + "개 + 섬김이", hRate));
+
+    var host = $("wk-chart");
+    host.textContent = "";
+    if(!wk.length){
+      host.appendChild(el("p", "muted", "아직 저장된 출석이 없습니다."));
+    } else {
+      $("wk-cap").textContent = String(wk[0].cap || totalCap);
+      wk.forEach(function(w){
+        var pct = w.cap ? (w.att / w.cap * 100) : 0;
+        var col = el("div", "wk-col");
+        col.appendChild(el("div", "wk-val", w.att + "명"));
+        var track = el("div", "wk-track");
+        var bar = el("div", "wk-bar");
+        bar.style.height = Math.max(6, Math.min(100, pct)) + "%";
+        bar.title = w.label + " · 출석 " + w.att + "명 / 정원 " + w.cap + "명 (" + fmt1(pct) + "%)";
+        track.appendChild(bar);
+        col.appendChild(track);
+        var pc = el("div", "wk-pct", fmt1(pct) + "%");
+        pc.style.color = rateColor(pct);
+        col.appendChild(pc);
+        var lab = el("div", "wk-lab");
+        lab.appendChild(el("b", null, w.label));
+        col.appendChild(lab);
+        host.appendChild(col);
+      });
+    }
+
+    var list = rows.map(function(r){ return {r: r, rate: roomRate(r)}; });
+    list.sort(function(a, b){
+      if(a.rate === null && b.rate === null){ return 0; }
+      if(a.rate === null){ return 1; }
+      if(b.rate === null){ return -1; }
+      return b.rate - a.rate;
+    });
+    var grid = $("rate-grid");
+    grid.textContent = "";
+    // 넓은 화면에서는 두 칸으로 나누되, 위에서 아래로 차례대로 읽히게 합니다
+    if(window.matchMedia && window.matchMedia("(min-width: 820px)").matches && list.length > 6){
+      grid.style.gridAutoFlow = "column";
+      grid.style.gridTemplateRows = "repeat(" + Math.ceil(list.length / 2) + ", auto)";
+    } else {
+      grid.style.gridAutoFlow = "";
+      grid.style.gridTemplateRows = "";
+    }
+    list.forEach(function(o){
+      var row = el("div", "rate-row");
+      var nm = el("div", "rate-name");
+      nm.appendChild(el("span", "rno",
+        (o.r.no === "" || o.r.no === null || o.r.no === undefined) ? "·" : String(o.r.no)));
+      nm.appendChild(document.createTextNode(o.r.name));
+      nm.title = o.r.name + " · 정원 " + (o.r.cap ? o.r.cap + "명" : "미정") +
+        " · 평균출석 " + fmtAvg(avg(o.r.att)) + "명";
+      row.appendChild(nm);
+      var track = el("div", "rate-track" + (o.rate === null ? " none" : ""));
+      if(o.rate !== null){
+        var fill = el("div", "rate-fill");
+        fill.style.width = Math.max(3, Math.min(100, o.rate)) + "%";
+        fill.style.background = rateColor(o.rate);
+        track.appendChild(fill);
+      }
+      row.appendChild(track);
+      if(o.rate === null){
+        row.appendChild(el("div", "rate-val none", o.r.cap ? "자료 없음" : "정원 미정"));
+      } else {
+        var v = el("div", "rate-val", fmt1(o.rate) + "%");
+        v.style.color = rateColor(o.rate);
+        row.appendChild(v);
+      }
+      grid.appendChild(row);
+    });
+  }
+
   function renderStats(){
+    syncShepherdRoom();
     var body = $("stats-body");
     body.textContent = "";
     var jama = rooms.filter(function(r){ return r.kind === "자매"; });
@@ -1021,6 +1560,7 @@
     trJ.appendChild(t1);
     sj.forEach(function(v){ trJ.appendChild(el("td", null, v === null ? "—" : String(v))); });
     trJ.appendChild(el("td", null, fmtAvg(avg(sj))));
+    trJ.appendChild(rateCell(rateOf(jama)));
     body.appendChild(trJ);
 
     hyung.forEach(function(r){ body.appendChild(buildRow(r, r.isNew)); });
@@ -1033,6 +1573,7 @@
     trH.appendChild(t2);
     sh.forEach(function(v){ trH.appendChild(el("td", null, v === null ? "—" : String(v))); });
     trH.appendChild(el("td", null, fmtAvg(avg(sh))));
+    trH.appendChild(rateCell(rateOf(hyung)));
     body.appendChild(trH);
 
     body.appendChild(buildRow(seongim, false));
@@ -1046,7 +1587,10 @@
     trT.appendChild(t3);
     st.forEach(function(v){ trT.appendChild(el("td", null, v === null ? "—" : String(v))); });
     trT.appendChild(el("td", null, fmtAvg(avg(st))));
+    trT.appendChild(rateCell(rateOf(rooms.concat([seongim]))));
     body.appendChild(trT);
+
+    renderDashboard();
   }
 
   /* ----- 새 사랑방 추가 ----- */
@@ -1091,24 +1635,26 @@
   function csvCell(v){ return "\"" + String(v).replace(/"/g, "\"\"") + "\""; }
   function downloadCSV(){
     var lines = [];
-    lines.push(["번호","구분","사랑방","정원","5월 7일","5월 14일","5월 21일","6월 4일","6월 11일","6월 18일","5-6월 평균출석"].map(csvCell).join(","));
+    lines.push(["번호","구분","사랑방","정원","5월 7일","5월 14일","5월 21일","6월 4일","6월 11일","6월 18일","5-6월 평균출석","출석률(%)"].map(csvCell).join(","));
     var jama = rooms.filter(function(r){ return r.kind === "자매"; });
     var hyung = rooms.filter(function(r){ return r.kind === "형제"; });
     function row(r){
       var cells = [r.no, r.kind, r.name, r.cap === null ? "" : r.cap];
       r.att.forEach(function(v){ cells.push(v === null ? "" : v); });
       cells.push(fmtAvg(avg(r.att)));
+      var rr = roomRate(r);
+      cells.push(rr === null ? "" : fmt1(rr));
       return cells.map(csvCell).join(",");
     }
     jama.forEach(function(r){ lines.push(row(r)); });
     var sj = sumOf(jama);
-    lines.push(["","","자매소계",""].concat(sj.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sj))]).map(csvCell).join(","));
+    lines.push(["","","자매소계",""].concat(sj.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sj))]).concat([fmt1(rateOf(jama))]).map(csvCell).join(","));
     hyung.forEach(function(r){ lines.push(row(r)); });
     var sh = sumOf(hyung);
-    lines.push(["","","형제소계",""].concat(sh.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sh))]).map(csvCell).join(","));
+    lines.push(["","","형제소계",""].concat(sh.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(sh))]).concat([fmt1(rateOf(hyung))]).map(csvCell).join(","));
     lines.push(row(seongim));
     var st = sumOf([{att:sj},{att:sh},{att:seongim.att}]);
-    lines.push(["","","총출석인원",""].concat(st.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(st))]).map(csvCell).join(","));
+    lines.push(["","","총출석인원",""].concat(st.map(function(v){ return v === null ? "" : v; })).concat([fmtAvg(avg(st))]).concat([fmt1(rateOf(rooms.concat([seongim])))]).map(csvCell).join(","));
     var csv = "\ufeff" + lines.join("\r\n");
     var blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
     var url = URL.createObjectURL(blob);
@@ -1133,13 +1679,24 @@
       if(a.weeks >= 3){ c3++; } else { c2++; }
       var item = el("div", "aitem " + (a.weeks >= 3 ? "v3" : "v2"));
       var left = el("div");
+      var head = el("div", "al-head");
+      var mb = memberByName(a.name);
+      head.appendChild(avatarNode({
+        name: a.name,
+        photo: mb ? mb.photo : null,
+        ill: mb ? mb.ill : null,
+        size: "sm"
+      }));
+      var body2 = el("div");
       var who = el("div", "al-who");
       who.appendChild(document.createTextNode(a.name + " "));
       var tag = el("span", "al-tag " + (a.weeks >= 3 ? "tag-3" : "tag-2"), a.weeks + "주 연속 결석 · " + (a.weeks >= 3 ? "심방 필요" : "주의"));
       who.appendChild(tag);
-      left.appendChild(who);
-      left.appendChild(el("div", "al-meta", a.room + " 사랑방 · 사유: " + a.reason + (a.memo ? " · " + a.memo : "")));
-      left.appendChild(el("div", "al-meta", "기도제목: " + (a.pray || "—")));
+      body2.appendChild(who);
+      body2.appendChild(el("div", "al-meta", a.room + " 사랑방 · 사유: " + a.reason + (a.memo ? " · " + a.memo : "")));
+      body2.appendChild(el("div", "al-meta", "기도제목: " + (a.pray || "—")));
+      head.appendChild(body2);
+      left.appendChild(head);
       item.appendChild(left);
       list.appendChild(item);
     });
@@ -1174,8 +1731,19 @@
     }
     rows.forEach(function(p){
       var c = el("div", "pray-card");
-      c.appendChild(el("div", "pc-name", p.name));
-      c.appendChild(el("div", "pc-room", p.room + " 사랑방"));
+      var mb = memberByName(p.name);
+      var ph = el("div", "pc-head");
+      ph.appendChild(avatarNode({
+        name: p.name,
+        photo: mb ? mb.photo : null,
+        ill: mb ? mb.ill : null,
+        size: "xs"
+      }));
+      var pn = el("div");
+      pn.appendChild(el("div", "pc-name", p.name));
+      pn.appendChild(el("div", "pc-room", p.room + " 사랑방"));
+      ph.appendChild(pn);
+      c.appendChild(ph);
       c.appendChild(el("p", null, p.pray));
       grid.appendChild(c);
     });
@@ -1286,6 +1854,14 @@
   $("tab-stats").addEventListener("click", function(){ setTab("stats"); });
   $("tab-absence").addEventListener("click", function(){ setTab("absence"); });
   $("tab-auth").addEventListener("click", function(){ setTab("auth"); });
+
+  var resizeTimer = null;
+  window.addEventListener("resize", function(){
+    if(resizeTimer){ clearTimeout(resizeTimer); }
+    resizeTimer = setTimeout(function(){
+      if(state.role === "admin" && !$("panel-stats").hidden){ renderStats(); }
+    }, 220);
+  });
 
   window.addEventListener("scroll", function(){
     var bar = $("savebar");
